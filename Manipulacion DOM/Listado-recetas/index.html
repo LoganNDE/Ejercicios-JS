@@ -5,36 +5,101 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Recetas | Logan Naranjo</title>
     <script src="recetas-JSON.js"></script>
+    <script src="https://kit.fontawesome.com/9f16feb66e.js" crossorigin="anonymous"></script>
     <style>
         *{
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        }
+
+        .container{
+            margin: 50px 0px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
         
         main{
-            display: flex;
-            flex-direction: row;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            width: 1200px;
+            gap: 20px;
         }
 
+        h1{
+            margin-bottom: 15px;
+        }
+
+
+        /* Metodo para insertar imagenes/iconos no vectoriales*/
+        h1::before{
+            content: "";
+            display: inline-block;
+            background-image: url('https://s3.amazonaws.com/pix.iemoji.com/images/emoji/apple/ios-12/256/man-cook-light-skin-tone.png');
+            background-size: contain; 
+            background-repeat: no-repeat;
+            width: 24px;
+            height: 24px;
+            margin-right: 5px;
+        }
+
+        h3{
+            margin: 5px 0px 10px 0px;
+        }
+
+        .icon{
+            margin-right: 9px;
+        }
+
+        h4{
+            margin-bottom: 5px;
+        }
+
+        .card{
+            width: 100%;
+            border: 1px solid rgb(165, 165, 165);
+            border-radius: 10px;
+            padding: 15px;
+            background-color: beige;
+        }
+
+
+        .imagenReceta{
+            width: 100%;
+            border-radius: 5px;
+        }
     </style>
 </head>
 <body>
-    <main class="main"></main>
+    <div class="container">
+        <main class="main"></main>
+    </div>
+
 
     <script>
+        const container = document.querySelector(".container")
         const mainContent = document.querySelector(".main")
         console.log(RecetasJSON)
 
+        
+        let title = document.createElement("h1")
+            title.innerHTML = "Ricette della mamma"
+            container.insertBefore(title, mainContent) // Esto asegura que el título vaya antes del contenido de main
+            
         RecetasJSON.forEach(element => {
             let nodeDiv = document.createElement("div")
             mainContent.appendChild(nodeDiv)
+            nodeDiv.setAttribute("class", "card")
 
             let imagen = document.createElement("img")
             imagen.setAttribute("src", element["img"])
-            mainContent.appendChild(imagen)
+            imagen.setAttribute("class", "imagenReceta")
+            nodeDiv.appendChild(imagen)
 
             let autor = document.createElement("h3");
-            autor.innerHTML = element['author']
+            autor.innerHTML = '<i class="fa-regular fa-circle-user icon"></i>' + element['author']
             nodeDiv.appendChild(autor)
 
             
@@ -42,12 +107,15 @@
             nombreReceta.innerHTML = element['name']
             nodeDiv.appendChild(nombreReceta)
 
+            let decripcion = document.createElement("p");
+            decripcion.innerHTML = element['description']
+            nodeDiv.appendChild(decripcion)
+
         });
 
 
-    </script>
 
-    <img >
+    </script>
 
 </body>
 </html>
