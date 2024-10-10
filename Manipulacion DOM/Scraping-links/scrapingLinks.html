@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Scraping | Links </title>
+</head>
+<body>
+    
+    <main class="content">
+        <h1>Link Scrapig | HTML</h1>
+        <textarea name="code" id="code" placeholder="Introduzca su codigo HTML"></textarea>
+        <button onclick="scrapingLinks()">Comprobar</button>
+    </main>
+
+
+    <script>
+
+        scrapingLinks = () =>{
+
+            let code = document.getElementById("code").value;
+            let resultList = [];
+            let allLinks = [];
+
+            regex = /<a[^>]*href="([^"]*)"[^>]*>/gim
+            
+            while((resultList = regex.exec(code)) != null){
+                resultList = regex.exec(code)
+            }
+
+            console.log(resultList)
+            
+
+
+
+            resultList.forEach(links => {
+                let newP = document.createElement("p");
+                let newContent = document.createTextNode(links)
+                
+                newP.appendChild(newContent);
+                let mainContent = document.getElementById("content");
+
+                document.body.insertBefore(newP, mainContent)
+            })
+        }
+
+    </script>
+
+</body>
+</html>

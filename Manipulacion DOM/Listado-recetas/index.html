@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recetas | Logan Naranjo</title>
+    <script src="recetas-JSON.js"></script>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        
+        main{
+            display: flex;
+            flex-direction: row;
+        }
+
+    </style>
+</head>
+<body>
+    <main class="main"></main>
+
+    <script>
+        const mainContent = document.querySelector(".main")
+        console.log(RecetasJSON)
+
+        RecetasJSON.forEach(element => {
+            let nodeDiv = document.createElement("div")
+            mainContent.appendChild(nodeDiv)
+
+            let imagen = document.createElement("img")
+            imagen.setAttribute("src", element["img"])
+            mainContent.appendChild(imagen)
+
+            let autor = document.createElement("h3");
+            autor.innerHTML = element['author']
+            nodeDiv.appendChild(autor)
+
+            
+            let nombreReceta = document.createElement("h4");
+            nombreReceta.innerHTML = element['name']
+            nodeDiv.appendChild(nombreReceta)
+
+        });
+
+
+    </script>
+
+    <img >
+
+</body>
+</html>
