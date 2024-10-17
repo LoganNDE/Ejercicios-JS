@@ -1,4 +1,4 @@
-RecetasJSON = [
+let RecetasJSON = [
     {
       "_id": {
         "$oid": "81F1931D8BD743ABAAE4AEB11E557A9C"
