@@ -62,13 +62,21 @@
             border: 1px solid rgb(165, 165, 165);
             border-radius: 10px;
             padding: 15px;
-            background-color: beige;
+            background-color: rgb(240, 237, 237);
         }
 
 
         .imagenReceta{
             width: 100%;
             border-radius: 5px;
+        }
+
+
+        .backgroundLightBox{
+            z-index: 1;
+            position: absolute;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, 0.21);
         }
 
 
@@ -96,19 +104,25 @@
 
 
     <script>
+        const body = document.querySelector("body")
         const container = document.querySelector(".container")
         const mainContent = document.querySelector(".main")
         console.log(RecetasJSON)
+
+        var nodeDiv;
 
         
         let title = document.createElement("h1")
             title.innerHTML = "Ricette della mamma"
             container.insertBefore(title, mainContent) // Esto asegura que el título vaya antes del contenido de main
-            
+        
+        let contador = 0;
         RecetasJSON.forEach(element => {
-            let nodeDiv = document.createElement("div")
+            contador++;
+            nodeDiv = document.createElement("div")
             mainContent.appendChild(nodeDiv)
             nodeDiv.setAttribute("class", "card")
+            nodeDiv.classList.add(contador)
 
             let imagen = document.createElement("img")
             imagen.setAttribute("src", element["img"])
@@ -128,7 +142,17 @@
             decripcion.innerHTML = element['description']
             nodeDiv.appendChild(decripcion)
 
+            nodeDiv.addEventListener('click', function(event){
+                console.log(event)
+                let fondoLightbox = document.createElement("div");
+                fondoLightbox.classList.add("backgroundLightBox")
+                body.appendChild(fondoLightbox)
+                
+            })
         });
+
+
+
 
 
 
