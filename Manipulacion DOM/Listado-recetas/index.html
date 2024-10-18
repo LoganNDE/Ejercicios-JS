@@ -15,7 +15,7 @@
         }
 
         .container{
-            margin: 50px 0px;
+            padding: 50px 0;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -54,7 +54,7 @@
         }
 
         h4{
-            margin-bottom: 5px;
+            margin: 8px 0px 4px 0px;
         }
 
         .card{
@@ -63,6 +63,12 @@
             border-radius: 10px;
             padding: 15px;
             background-color: rgb(240, 237, 237);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .card:hover{
+            background-color: rgb(199, 199, 199);
         }
 
 
@@ -71,15 +77,45 @@
             border-radius: 5px;
         }
 
-
-        .backgroundLightBox{
-            z-index: 1;
-            position: absolute;
-            height: 100vh;
-            background-color: rgba(0, 0, 0, 0.21);
+        .imagenRecetaInfo{
+            width: 100%;
         }
 
 
+        .backgroundLightBox{
+            z-index: 1;
+            width: 100vw;
+            height: 100vh;
+            position: fixed;
+            background-color: rgba(0, 0, 0, 0.21);
+            top: 0;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .infoReceta{
+            z-index: 20;
+            width: 600px;
+            height: auto;
+            background-color: white;
+            border-radius: 20px;
+            padding: 20px;
+        }
+
+        .efectoBlur{
+            filter: blur(10px);
+        }
+
+        li{
+            list-style: none;
+        }
+
+        li::before{
+            content: "- ";
+        }
 
         @media (max-width: 767px) {
             main{
@@ -104,57 +140,121 @@
 
 
     <script>
-        const body = document.querySelector("body")
         const container = document.querySelector(".container")
         const mainContent = document.querySelector(".main")
+        const body = document.querySelector("body")
+
+        //Titulo de la web
+        let title = document.createElement("h1")
+        title.innerHTML = "Ricette della mamma"
+        container.insertBefore(title, mainContent) // Esto asegura que el título vaya antes del contenido de main
+        
         console.log(RecetasJSON)
 
-        var nodeDiv;
+        //Lightbox
+        var fondoLightbox = document.createElement("div"); //Background del lightbox, creada previamente para asignarle eventos
+        let info; //Tarjeta del lightbox, definida previamente para evitar duplicidad de elemntos
 
-        
-        let title = document.createElement("h1")
-            title.innerHTML = "Ricette della mamma"
-            container.insertBefore(title, mainContent) // Esto asegura que el título vaya antes del contenido de main
-        
-        let contador = 0;
-        RecetasJSON.forEach(element => {
-            contador++;
-            nodeDiv = document.createElement("div")
+        RecetasJSON.forEach(receta => {
+            var nodeDiv = document.createElement("div")
             mainContent.appendChild(nodeDiv)
             nodeDiv.setAttribute("class", "card")
-            nodeDiv.classList.add(contador)
+            nodeDiv.setAttribute("id", receta._id["$oid"])
 
             let imagen = document.createElement("img")
-            imagen.setAttribute("src", element["img"])
+            imagen.setAttribute("src", receta["img"])
             imagen.setAttribute("class", "imagenReceta")
             nodeDiv.appendChild(imagen)
 
             let autor = document.createElement("h3");
-            autor.innerHTML = '<i class="fa-regular fa-circle-user icon"></i>' + element['author']
+            autor.innerHTML = '<i class="fa-regular fa-circle-user icon"></i>' + receta['author']
             nodeDiv.appendChild(autor)
 
             
             let nombreReceta = document.createElement("h4");
-            nombreReceta.innerHTML = element['name']
+            nombreReceta.innerHTML = receta['name']
             nodeDiv.appendChild(nombreReceta)
 
             let decripcion = document.createElement("p");
-            decripcion.innerHTML = element['description']
+            decripcion.innerHTML = (receta['description'].slice(0, 110) + "...")
             nodeDiv.appendChild(decripcion)
 
+
             nodeDiv.addEventListener('click', function(event){
-                console.log(event)
-                let fondoLightbox = document.createElement("div");
-                fondoLightbox.classList.add("backgroundLightBox")
-                body.appendChild(fondoLightbox)
-                
-            })
-        });
+
+                //Lightbox
+                info = document.createElement("div")
+                let tituloLightBox = document.createElement("h2")
+
+                //Funciona gracias a las clausuras de JS -> https://developer.mozilla.org/es/docs/Web/JavaScript/Closures
+                if (receta._id['$oid'] === this.id){
+                    body.appendChild(fondoLightbox)
+                    fondoLightbox.classList.add("backgroundLightBox")
+                    
+                    //Insercion del div que contendra la informacion de la receta
+                    fondoLightbox.appendChild(info)
+                    info.classList.add("infoReceta")
+
+                    //Insersion de imagen de la receta
+                    let imagen = document.createElement("img")
+                    imagen.setAttribute("src", receta["img"])
+                    imagen.classList.add("imagenReceta")
+                    info.appendChild(imagen)
+
+                    //Insersion del titulo de la receta
+                    tituloLightBox.innerText = receta.name
+                    info.appendChild(tituloLightBox)
+
+                    //Insersion del autor de la receta
+                    let autor = document.createElement("h3");
+                    autor.innerHTML = '<i class="fa-regular fa-circle-user icon"></i>' + receta['author']
+                    info.appendChild(autor)
+
+                    //Insersion del titulo descripcion de la receta
+                    let tituloDesc = document.createElement("h4");
+                    tituloDesc.innerHTML = "Descripcion: "
+                    info.appendChild(tituloDesc)
+
+                    //Insersion de descripcion de la receta
+                    let decripcion = document.createElement("p");
+                    decripcion.innerHTML = receta['description']
+                    info.appendChild(decripcion)
+
+                    //Insersion del titulo descripcion de la receta
+                    let tituloIngr = document.createElement("h4");
+                    tituloIngr.innerHTML = "Ingredientes:"
+                    info.appendChild(tituloIngr)
+
+                    let listaIngredientes = document.createElement("ul");
+
+                    receta.ingredients.forEach(ingredientes => {
+                        let ingrediente = document.createElement("li");
+                        ingrediente.innerText = ingredientes.qty + " " + ingredientes.name
+                        listaIngredientes.appendChild(ingrediente)
+                    });
 
 
+                    info.appendChild(listaIngredientes)
+                    container.classList.add("efectoBlur")
 
+                }else{
+                    console.log("La card pulsada no coincide con el lightbox. Contacte con el administrador del sitio web")
+                }
+        
+        })
 
+    });
 
+        fondoLightbox.addEventListener('click', salirLightBox =>{
+            //PROPAGACION???
+            console.log(salirLightBox.target)
+            if (fondoLightbox === salirLightBox.target){
+            fondoLightbox.classList.remove("backgroundLightBox")
+            container.classList.remove("efectoBlur")
+            info.remove();
+            }
+            
+        })
 
     </script>
 
