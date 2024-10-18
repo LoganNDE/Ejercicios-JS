@@ -6,6 +6,9 @@
     <title>Recetas | Logan Naranjo</title>
     <script src="recetas-JSON.js"></script>
     <script src="https://kit.fontawesome.com/9f16feb66e.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="scripts/jq-ui/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+    <script src="scripts/jq-ui/jquery-ui.js"></script>
     <style>
         *{
             margin: 0;
@@ -89,7 +92,6 @@
             position: fixed;
             background-color: rgba(0, 0, 0, 0.21);
             top: 0;
-            left: 0;
             right: 0;
             display: flex;
             justify-content: center;
@@ -113,7 +115,7 @@
             list-style: none;
         }
 
-        li::before{
+        #tabs-2 li::before{
             content: "- ";
         }
 
@@ -148,12 +150,6 @@
         let title = document.createElement("h1")
         title.innerHTML = "Ricette della mamma"
         container.insertBefore(title, mainContent) // Esto asegura que el título vaya antes del contenido de main
-        
-        console.log(RecetasJSON)
-
-        //Lightbox
-        var fondoLightbox = document.createElement("div"); //Background del lightbox, creada previamente para asignarle eventos
-        let info; //Tarjeta del lightbox, definida previamente para evitar duplicidad de elemntos
 
         RecetasJSON.forEach(receta => {
             var nodeDiv = document.createElement("div")
@@ -179,15 +175,12 @@
             decripcion.innerHTML = (receta['description'].slice(0, 110) + "...")
             nodeDiv.appendChild(decripcion)
 
-
+            //Lightbox
             nodeDiv.addEventListener('click', function(event){
-
-                //Lightbox
-                info = document.createElement("div")
+                var fondoLightbox = document.createElement("div");
+                let info = document.createElement("div")
                 let tituloLightBox = document.createElement("h2")
 
-                //Funciona gracias a las clausuras de JS -> https://developer.mozilla.org/es/docs/Web/JavaScript/Closures
-                if (receta._id['$oid'] === this.id){
                     body.appendChild(fondoLightbox)
                     fondoLightbox.classList.add("backgroundLightBox")
                     
@@ -201,29 +194,59 @@
                     imagen.classList.add("imagenReceta")
                     info.appendChild(imagen)
 
+                    let tabs = document.createElement("div");
+                    tabs.setAttribute("id", "tabs");
+                    let listTabs = document.createElement("ul");
+
+                    contentTabs = ["Detalles", "Ingredientes"]
+                    for (let i = 1; i < 3; i++){
+                        let tab_li = document.createElement("li");
+                        let aLink = document.createElement("a");
+                        aLink.setAttribute("href", "#tabs-"+i);
+                        tab_li.appendChild(aLink);
+                        aLink.innerText = contentTabs[i-1];
+                        listTabs.appendChild(tab_li);
+                        tabs.appendChild(listTabs);
+                    }
+
+                    for (let i = 1; i < 3; i++){
+                        let detallesReceta = document.createElement("div")
+                        detallesReceta.setAttribute("id", "tabs-" + i)
+                        tabs.appendChild(detallesReceta)
+                    }
+
+                    info.appendChild(tabs);
+
+                    let tabDetalles = document.querySelector("#tabs-1")
+                    let tabIngredientes = document.querySelector("#tabs-2")
+
+                    $( "#tabs" ).tabs();
+
+
                     //Insersion del titulo de la receta
                     tituloLightBox.innerText = receta.name
-                    info.appendChild(tituloLightBox)
+                    tabDetalles.appendChild(tituloLightBox)
 
                     //Insersion del autor de la receta
                     let autor = document.createElement("h3");
                     autor.innerHTML = '<i class="fa-regular fa-circle-user icon"></i>' + receta['author']
-                    info.appendChild(autor)
+                    tabDetalles.appendChild(autor)
+
 
                     //Insersion del titulo descripcion de la receta
                     let tituloDesc = document.createElement("h4");
                     tituloDesc.innerHTML = "Descripcion: "
-                    info.appendChild(tituloDesc)
+                    tabDetalles.appendChild(tituloDesc)
 
                     //Insersion de descripcion de la receta
                     let decripcion = document.createElement("p");
                     decripcion.innerHTML = receta['description']
-                    info.appendChild(decripcion)
+                    tabDetalles.appendChild(decripcion)
 
-                    //Insersion del titulo descripcion de la receta
+                    //Insersion del titulo ingredientes de la receta
                     let tituloIngr = document.createElement("h4");
                     tituloIngr.innerHTML = "Ingredientes:"
-                    info.appendChild(tituloIngr)
+                    tabIngredientes.appendChild(tituloIngr)
 
                     let listaIngredientes = document.createElement("ul");
 
@@ -234,27 +257,24 @@
                     });
 
 
-                    info.appendChild(listaIngredientes)
+                    tabIngredientes.appendChild(listaIngredientes)
                     container.classList.add("efectoBlur")
 
-                }else{
-                    console.log("La card pulsada no coincide con el lightbox. Contacte con el administrador del sitio web")
+                fondoLightbox.addEventListener('click', salirLightBox =>{
+                    //PROPAGACION???
+                    console.log(salirLightBox.target)
+                    if (fondoLightbox === salirLightBox.target){
+                    fondoLightbox.classList.remove("backgroundLightBox")
+                    container.classList.remove("efectoBlur")
+                    info.remove();
                 }
-        
+            
         })
 
     });
 
-        fondoLightbox.addEventListener('click', salirLightBox =>{
-            //PROPAGACION???
-            console.log(salirLightBox.target)
-            if (fondoLightbox === salirLightBox.target){
-            fondoLightbox.classList.remove("backgroundLightBox")
-            container.classList.remove("efectoBlur")
-            info.remove();
-            }
-            
-        })
+
+    })
 
     </script>
 
