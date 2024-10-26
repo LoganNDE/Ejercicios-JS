@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Abreviar Cadena</title>
+</head>
+<body>
+    <script>
+        /*
+        abreviarCadena = (cadena) =>{
+            cadenaExtraida = "";
+            for (let i = 0; i < cadena.length; i++){
+                cadenaExtraida += cadena[i];
+                if (cadena[i] === ' '){
+                    cadenaExtraida += cadena[i+1] + ".";
+                    return cadenaExtraida;
+                }
+            }
+            return cadenaExtraida;
+        }
+        */
+
+        abreviarCadena = (cadena) =>{
+            cadenaSeparada = [];
+            cadenaSeparada = cadena.split(" ");
+
+            //return cadenaSeparada[0] + " " + cadenaSeparada[1].slice(0, 1) + "."
+            return cadenaSeparada[0] + " " + cadenaSeparada[1].charAt(0) + "."
+        }
+        
+
+        console.log(abreviarCadena("Robin Singh")); 
+    </script>
+</body>
+</html>

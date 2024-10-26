@@ -1,0 +1,38 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Permutaciones</title>
+</head>
+<body>
+    
+    <script>
+        function permute(arr) {
+            if (arr.length === 0) return [[]];
+            
+            let result = [];
+
+            for (let i = 0; i < arr.length; i++) {
+                let currentNum = arr[i];
+                console.log(arr.length)
+                let remainingNums = arr.slice(0, i).concat(arr.slice(i + 1));
+
+                
+                let remainingPerms = permute(remainingNums);
+                
+                for (let perm of remainingPerms) {
+                    result.push([currentNum, ...perm]);
+                }
+            }
+
+            return result;
+        }
+
+        let numbers = [1, 2, 3];
+        let permutations = permute(numbers);
+        console.log('Permutaciones:', permutations);
+    </script>
+</body>
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Torres de Hanoi</title>
+</head>
+<body>
+    <script>
+        // Función recursiva para resolver las Torres de Hanoi
+        function torresDeHanoi(n, origen, destino, auxiliar) {
+            console.log(n)
+            // Caso base: si solo hay un disco, se mueve directamente
+            if (n === 1) {
+                console.log(`Mueve el disco 1 de ${origen} a ${destino}`);
+                return;
+            }
+    
+            // Paso 1: Mover los N-1 discos de la torre origen a la torre auxiliar
+            torresDeHanoi(n - 1, origen, auxiliar, destino);
+    
+            // Paso 2: Mover el disco N de la torre origen a la torre destino
+            console.log(`Mueve el disco ${n} de ${origen} a ${destino}`);
+    
+            // Paso 3: Mover los N-1 discos de la torre auxiliar a la torre destino
+            torresDeHanoi(n - 1, auxiliar, destino, origen);
+        }
+    
+        // Número de discos
+        const numeroDeDiscos = 3;
+    
+        // Llamar a la función para mover los discos de la torre A a la torre C
+        torresDeHanoi(numeroDeDiscos, 'A', 'C', 'B');
+    </script>
+    
+</body>
+</html>

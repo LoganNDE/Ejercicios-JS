@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+    <script>
+    sacarCarta = () => Math.floor(Math.random() * 12 + 1);
+
+    comprobarGanador = (puntos) => {
+        if (puntos > 21){
+            return "perdio";
+        } else if (puntos === 21){
+            return "gano";
+        }
+        return "continua";
+    }
+
+    jugar = (turnoJ1 = true, turnoJ2 = false) => {
+        
+        let planteJ1 = false, planteJ2 = false;
+        let puntosJ1 = 0, puntosJ2 = 0;
+        let resultadoJ1, resultadoJ2
+        
+        if (turnoJ1 && !turnoJ2 || !turnoJ1 && turnoJ2) {
+
+            do {
+                if (!planteJ1) {
+                        respuestaJ1 = confirm(`Jugador 1. Usted tiene ${puntosJ1} puntos, desea sacar una nueva carta.`);
+                        if (!respuestaJ1) {
+                            planteJ1 = true;
+                        } else{
+                            cartaAleatoriaJ1 = sacarCarta();
+                            console.log("Numero aleatorio: " + cartaAleatoriaJ1);
+                            console.log("Puntos actuales: " + puntosJ1);
+                            console.log("Suma de puntosJ1: " + (puntosJ1 += cartaAleatoriaJ1));
+                            resultadoJ1 = comprobarGanador(puntosJ1);
+                            console.log(resultadoJ1)
+                            console.log("-----------------------------------------------------------");
+                        }
+                }
+
+                if (!planteJ2){
+                        respuestaJ2 = confirm(`Jugador 2. Usted tiene ${puntosJ2} puntos, desea sacar una nueva carta`);
+                        if (!respuestaJ2) {
+                            planteJ2 = true;
+                        } else{
+                            cartaAleatoriaJ2 = sacarCarta();
+                            console.log("Numero aleatorio: " + cartaAleatoriaJ2);
+                            console.log("Puntos actuales: " + puntosJ2);
+                            console.log("Suma de puntosJ2: " + (puntosJ2 += cartaAleatoriaJ2));
+                            resultadoJ2 = comprobarGanador(puntosJ2);
+                            console.log(resultadoJ2)
+                            console.log("-----------------------------------------------------------");
+                        }
+                    }
+            
+            } while ((!planteJ1 || !planteJ2) && (resultadoJ1 == "continua" && resultadoJ2 == "continua"));
+
+
+
+            if ((planteJ1 || planteJ2) && (puntosJ1 > puntosJ2)){
+                alert("Ha ganado Jugador 1 con " + puntosJ1 + " puntos." + " Jugandor 2 perdió con " + puntosJ2 + " puntos");
+            }else if ((planteJ1 || planteJ2) && (puntosJ1 < puntosJ2)){
+                alert("Ha ganado Jugador 2 con " + puntosJ2 + "puntos." + " Jugandor 1 perdió con " + puntosJ1 + " puntos");
+            }else if ((planteJ1 || planteJ2) && (puntosJ1 === puntosJ2)){
+                alert("Ambos jugadores han empatado. Puntos Jugador 1: "  + puntosJ1 + " puntos." + "Puntos Jugador 2: " + puntosJ2 + " puntos");
+            }
+
+
+            
+            if ((resultadoJ1 == "perdio" && resultadoJ2 == "perdio") || (resultadoJ1 == "gano" && resultadoJ2 == "gano")){
+                alert("Ambos jugadores han empatado. Puntos Jugador 1: "  + puntosJ1 + " puntos." + "Puntos Jugador 2: " + puntosJ2 + " puntos");
+            }else if(resultadoJ2 == "gano" || resultadoJ1 == "perdio"){
+                alert("Ha ganado Jugador 2 con " + puntosJ2 + "puntos." + " Jugandor 1 perdió con " + puntosJ1 + " puntos");
+            }else if(resultadoJ1 == "gano" || resultadoJ2 == "perdio"){
+                alert("Ha ganado Jugador 1 con " + puntosJ1 + " puntos." + " Jugandor 2 perdió con " + puntosJ2 + " puntos");
+            }
+        }
+
+    }
+
+    jugar();
+
+
+
+
+
+    </script>
+
+</body>
+</html>

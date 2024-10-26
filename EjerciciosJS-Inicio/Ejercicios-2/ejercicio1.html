@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Operaciones | Área de un cuadrado</title>
+</head>
+<body>
+    <script>
+        const areaCuadrado = (lado) => {
+            if (Number.isInteger(lado)){
+                return "El área de tu cuadrado es: " + lado * lado
+            }else{
+                return "El parámetro indicado no es un número valido"
+            }
+        };
+        
+        let lado = Number(prompt("Indica el número deseado"))
+        alert(areaCuadrado(lado))
+    </script>
+</body>
+</html>

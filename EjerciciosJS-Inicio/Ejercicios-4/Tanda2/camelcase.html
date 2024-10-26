@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CamelCase</title>
+</head>
+<body>
+    
+    <script>
+
+        camelize = (cadena) => {
+            cadenaSeparada = cadena.split(" ");
+            cadenaTratada = "";
+
+            cadenaSeparada.forEach(cadena => {
+                cadena = cadena.replace(cadena.charAt(0), cadena.charAt(0).toUpperCase());
+            cadenaTratada += cadena;
+            });
+
+            return cadenaTratada;
+        }
+
+        console.log(camelize("hola que tal estas"));
+
+
+    </script>
+
+</body>
+</html>

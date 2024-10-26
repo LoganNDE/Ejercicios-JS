@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Numero Factorial</title>
+</head>
+<body>
+    <script>
+        window.onload = calcularFactorial()
+
+        function calcularFactorial() {
+            let numeroFactorial = prompt("Indique el numero deseado para calcular su factorial")
+            let resultado = 1;
+
+            while (numeroFactorial >= 1) {
+                console.log(numeroFactorial)
+                resultado *= numeroFactorial;
+                numeroFactorial--
+
+            }
+            alert("Tu resultado es " + resultado)
+        }
+    </script>
+</body>
+</html>

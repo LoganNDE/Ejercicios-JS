@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejercicios Simples | Calculadora de IVA</title>
+</head>
+<body>
+    <script>
+        window.onload = calcularIVA()
+
+        function calcularIVA() {
+            precioIndicado = parseFloat(prompt("Indique el precio del producto deseado IVA INCLUIDO"));
+            ivaIndicado = parseInt(prompt("Indique el IVA del producto"));
+
+            switch (ivaIndicado) {
+                case 4:
+                case 10:
+                case 21:
+                    alert(precioIndicado / (1 + ivaIndicado / 100));
+                    break;
+                default:
+                    alert("IVA indicado incorrecto. Vuelva a intentarlo ");
+            }
+
+        }
+    </script>
+</body>
+
+
+
+</html>

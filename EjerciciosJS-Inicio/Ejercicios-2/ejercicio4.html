@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Número mayor Array</title>
+</head>
+<body>
+    <script>
+        max = (vector) => {
+            let maxTemp = 0
+            if (Array.isArray(vector)){
+                for(let i = 0; i <= vector.length - 1; i++ ){
+                    if(vector[i] > maxTemp){
+                        maxTemp = vector[i]
+                    }
+                }
+            }else{
+                return "No has indicado un array"
+            }
+
+            return "El número mayor de tu array es:" + maxTemp;
+        }
+        listaNumeros = [1, 167, 45, 23, 99, 2, 4, 8]
+        alert(max(listaNumeros))
+    </script>
+</body>
+</html>

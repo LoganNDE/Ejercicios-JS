@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proteger Correo</title>
+</head>
+<body>
+    <script>
+        protegerCorreo = (correo) => {
+            correoSeparado = [];
+            correoOculto = "";
+            numCaracteresOcultos = 0;
+
+            correoSeparado = correo.split("@");
+            numCaracteresOcultos = Math.floor((correoSeparado[0].length)/2)
+
+            correoOculto = correoSeparado[0].slice(0,numCaracteresOcultos) + "...@".concat(correoSeparado[1]);
+            return correoOculto;
+        }
+
+        console.log(protegerCorreo("co00@gmail.com"));
+        
+    </script>
+</body>
+</html>

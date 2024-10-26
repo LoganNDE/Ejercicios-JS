@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Extraer n caracteres</title>
+</head>
+<body>
+    <script>
+
+        /*
+        extraerCaracteres = (cadena, numero) =>{
+            cadenaExtraida = "";
+            for (let i = 0; i < numero; i++){
+                cadenaExtraida += cadena[i];
+            }
+            return cadenaExtraida;
+        }
+        */
+
+        extraerCaracteres = (cadena, numero) => cadena.slice(0, numero)
+
+
+        
+        console.log(extraerCaracteres("Robin Singh", 4)); 
+
+    </script>
+</body>
+</html>

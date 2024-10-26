@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejercicios Simples | Calculadora de IVA</title>
+</head>
+<body>
+    <script>
+        window.onload = calcularIVA()
+        
+        function calcularIVA(){
+            precioIndicado = prompt("Indique el precio del producto deseado")
+            ivaIndicado = prompt("Indique el IVA deseado")
+
+            parseFloat(precioIndicado)
+            parseFloat(ivaIndicado)
+
+            alert (precioIndicado * (1 + ivaIndicado/100))
+        }
+
+    </script>
+</body>
+
+
+
+</html>

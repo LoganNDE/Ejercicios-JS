@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ecuaciones de segundo grado</title>
+</head>
+<body>
+    <script>
+        function resolverEcuacion(a,b,c){
+
+        let x1, x2;
+
+        let discriminante = b * b - 4 * a * c;
+
+            if (discriminante > 0) {
+                x1 = (-b + Math.sqrt(discriminante)) / (2 * a);
+                x2 = (-b - Math.sqrt(discriminante)) / (2 * a);
+                return("Resultado x1: " + x1 + " | " + "Resultado x2: " + x2);
+            } else {
+                return("El discriminante no puede ser menor que 0");
+            }
+
+        }
+
+        let a = Number(prompt("Introduce el parámetro A"))
+        let b = Number(prompt("Introduce el parámetro B"))
+        let c = Number(prompt("Introduce el parámetro C"))
+
+        alert(resolverEcuacion(a,b,c))
+
+        
+
+    </script>
+</body>
+</html>

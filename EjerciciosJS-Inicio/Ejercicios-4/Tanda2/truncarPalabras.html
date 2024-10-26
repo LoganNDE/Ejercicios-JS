@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Truncar palabras</title>
+</head>
+<body>
+    <script>
+
+        truncarPalabras = (frase, numero) => {
+            listaPalabras = frase.split(" ");
+            fraseConcatenada = "";
+
+            if (numero < 1 || numero > frase.length){
+                return "Parametros incorectos. Vuelva a intantarlo"
+            }else{
+                for (let i = 0; i < numero; i++){
+                    fraseConcatenada += listaPalabras[i] + " "
+                }
+            }
+
+            return fraseConcatenada
+        } 
+
+        console.log(truncarPalabras('The quick brown fox jumps over the lazy dog', 4));
+    </script>
+</body>
+</html>

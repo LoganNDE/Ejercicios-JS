@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadenas similares</title>
+</head>
+<body>
+    
+    <script>
+        listarLetras = (palabraA, palabraB) => {
+            listaLetras = [];
+
+            for(let i = 0; i < palabraA.length; i++){
+                if (palabraA[i] == palabraB[i]){
+                    listaLetras.push(palabraA[i])
+                }
+            }
+            return listaLetras.join('');
+        }
+
+        console.log(listarLetras("go", "google"))
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ordenación Array</title>
+</head>
+<body>
+    <script>
+        ordenaAscendente = (a, b) => a-b; //  ordenAscendente
+        ordenaDescendente = (a, b) => b-a; // ordenDescendente678
+
+        function ordenar(vector, ordenar = true){
+            copiaVector = [...vector]
+
+            if (Array.isArray(vector) && ordenar == false){
+                return copiaVector.sort(ordenDescendente)
+            }else if(Array.isArray(vector) && ordenar == true){
+                return copiaVector.sort(ordenAscendente)
+            }else{
+                return "Los parámetros indicados no son correctos. Vuelva a intentarlo"
+            }
+        }
+
+        vectorOriginal = [1,4,2,8,3,90,45,10,982,999,12]
+
+        alert("Lista original: " + vertorOriginal)
+        alert("Ordenar ascendentemente: " + ordenar(vertorOriginal))
+        alert("Ordenar descendentemente: " + ordenar(vertorOriginal, false))
+    </script>
+    
+</body>
+</html>

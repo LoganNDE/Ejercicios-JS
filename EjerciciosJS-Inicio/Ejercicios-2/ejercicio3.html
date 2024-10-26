@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IVA</title>
+</head>
+<body>
+    <script>
+        function pvp(precio_base, tipo_iva=21){
+            ivaCorrecto = false;
+
+            if (tipo_iva === 0 || tipo_iva === 4 || tipo_iva === 10 || tipo_iva === 21){
+                ivaCorrecto = true;
+            }
+            console.log(tipo_iva)      
+            if (Number.isInteger(precio_base) && ivaCorrecto){
+                return "El precio con IVA del su producto es: " + (precio_base + precio_base * tipo_iva/100)
+            }else{
+                return "Parametros introducidos incorrectos. Vuelva a intentarlo"
+            }
+        }
+        alert(pvp(12,0))
+    </script>
+</body>
+</html>

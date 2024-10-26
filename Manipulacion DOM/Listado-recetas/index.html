@@ -6,7 +6,6 @@
     <title>Recetas | Logan Naranjo</title>
     <script src="recetas-JSON.js"></script>
     <script src="https://kit.fontawesome.com/9f16feb66e.js" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="scripts/jq-ui/jquery-ui.css">
     <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
     <script src="scripts/jq-ui/jquery-ui.js"></script>
     <style>
@@ -82,6 +81,7 @@
 
         .imagenRecetaInfo{
             width: 100%;
+            border-radius: 5px;
         }
 
 
@@ -100,8 +100,7 @@
 
         .infoReceta{
             z-index: 20;
-            width: 600px;
-            height: auto;
+            width: 800px;
             background-color: white;
             border-radius: 20px;
             padding: 20px;
@@ -119,6 +118,34 @@
             content: "- ";
         }
 
+        .intrucciones{
+            padding: 3px 5px;
+        }
+
+        .ui-tabs .ui-tabs-panel{
+            height: 60vh;
+            overflow-y: auto;
+            overflow-x: hidden;
+
+        }
+        
+        .containerColumn{
+            display: flex;
+            width: 100%;
+        }
+
+        .containerImgReceta{
+            width: 60%;
+            padding: 10px;
+        }
+        
+        .containerInfoReceta{ 
+            width: 40%;
+            padding: 10px;
+        }
+
+
+
         @media (max-width: 767px) {
             main{
             grid-template-columns: 1fr;
@@ -134,6 +161,9 @@
         }
 
     </style>
+
+    <link rel="stylesheet" href="scripts/jq-ui/jquery-ui.css">
+
 </head>
 <body>
     <div class="container">
@@ -178,28 +208,25 @@
             //Lightbox
             nodeDiv.addEventListener('click', function(event){
                 var fondoLightbox = document.createElement("div");
-                let info = document.createElement("div")
-                let tituloLightBox = document.createElement("h2")
+                let info = document.createElement("div");
+                let containerColumn = document.createElement("div");
+                let tituloLightBox = document.createElement("h2");
 
-                    body.appendChild(fondoLightbox)
-                    fondoLightbox.classList.add("backgroundLightBox")
+                    body.appendChild(fondoLightbox);
+                    fondoLightbox.classList.add("backgroundLightBox");
+                    containerColumn.classList.add("containerColumn")
                     
                     //Insercion del div que contendra la informacion de la receta
-                    fondoLightbox.appendChild(info)
-                    info.classList.add("infoReceta")
-
-                    //Insersion de imagen de la receta
-                    let imagen = document.createElement("img")
-                    imagen.setAttribute("src", receta["img"])
-                    imagen.classList.add("imagenReceta")
-                    info.appendChild(imagen)
+                    fondoLightbox.appendChild(info);
+                    info.classList.add("infoReceta");
+                    info.appendChild(containerColumn);
 
                     let tabs = document.createElement("div");
                     tabs.setAttribute("id", "tabs");
                     let listTabs = document.createElement("ul");
 
-                    contentTabs = ["Detalles", "Ingredientes"]
-                    for (let i = 1; i < 3; i++){
+                    contentTabs = ["Detalles", "Ingredientes", "Instrucciones"];
+                    for (let i = 1; i < 4; i++){
                         let tab_li = document.createElement("li");
                         let aLink = document.createElement("a");
                         aLink.setAttribute("href", "#tabs-"+i);
@@ -209,28 +236,51 @@
                         tabs.appendChild(listTabs);
                     }
 
-                    for (let i = 1; i < 3; i++){
-                        let detallesReceta = document.createElement("div")
-                        detallesReceta.setAttribute("id", "tabs-" + i)
+                    for (let i = 1; i < 4; i++){
+                        let detallesReceta = document.createElement("div");
+                        detallesReceta.setAttribute("id", "tabs-" + i);
                         tabs.appendChild(detallesReceta)
                     }
 
                     info.appendChild(tabs);
 
-                    let tabDetalles = document.querySelector("#tabs-1")
-                    let tabIngredientes = document.querySelector("#tabs-2")
+                    let tabDetalles = document.querySelector("#tabs-1");
+                    let tabIngredientes = document.querySelector("#tabs-2");
+                    let tabInstrucciones = document.querySelector("#tabs-3");
 
                     $( "#tabs" ).tabs();
 
+                    /*
+                        Creacion de las dos columnas de nuestro lightbox, el cual contendra la imagen y detalles como titulo,
+                        autor, tiempo de preparacion y tiempo de servido
+                    */
+
+                    let columnInfoReceta = document.createElement("div");
+                    let columnImgReceta = document.createElement("div");
+
+
+                    columnInfoReceta.classList.add("containerInfoReceta");
+                    columnImgReceta.classList.add("containerImgReceta");
+
+                    containerColumn.appendChild(columnInfoReceta);
+                    containerColumn.appendChild(columnImgReceta);
+
 
                     //Insersion del titulo de la receta
-                    tituloLightBox.innerText = receta.name
-                    tabDetalles.appendChild(tituloLightBox)
+                    tituloLightBox.innerText = receta.name;
+                    tabDetalles.appendChild(containerColumn);
+                    columnInfoReceta.appendChild(tituloLightBox);
+
+                    //Insersion de imagen de la receta
+                    let imagen = document.createElement("img")
+                    imagen.setAttribute("src", receta["img"])
+                    imagen.classList.add("imagenRecetaInfo")
+                    columnImgReceta.appendChild(imagen)
 
                     //Insersion del autor de la receta
                     let autor = document.createElement("h3");
                     autor.innerHTML = '<i class="fa-regular fa-circle-user icon"></i>' + receta['author']
-                    tabDetalles.appendChild(autor)
+                    columnInfoReceta.appendChild(autor)
 
 
                     //Insersion del titulo descripcion de la receta
@@ -256,12 +306,33 @@
                         listaIngredientes.appendChild(ingrediente)
                     });
 
-
                     tabIngredientes.appendChild(listaIngredientes)
+
+
+                    let listaInstrucciones = document.createElement("div");
+                    let tituloInstr = document.createElement("h4");
+                    tituloInstr.innerHTML = "Instrucciones:"
+                    tabInstrucciones.appendChild(tituloInstr)
+
+                    receta.instructions.forEach(instruccion => {
+                        let elementInstruccion = document.createElement("p");
+                        elementInstruccion.classList.add("intrucciones")
+
+                        if (instruccion.id == undefined && instruccion.detail == undefined){
+                            elementInstruccion.innerText = "El autor no ha especificado instrucciones para esta receta.";    
+                        }else{
+                            elementInstruccion.innerText = instruccion.id + ". " + instruccion.detail;
+                        }
+
+                        listaInstrucciones.appendChild(elementInstruccion)
+                        
+                    });
+
+                    tabInstrucciones.appendChild(listaInstrucciones)
+
                     container.classList.add("efectoBlur")
 
                 fondoLightbox.addEventListener('click', salirLightBox =>{
-                    //PROPAGACION???
                     console.log(salirLightBox.target)
                     if (fondoLightbox === salirLightBox.target){
                     fondoLightbox.classList.remove("backgroundLightBox")

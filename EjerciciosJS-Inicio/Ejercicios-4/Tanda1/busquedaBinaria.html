@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Búsqueda Binaria</title>
+</head>
+
+<body>
+    <script>
+
+        sacarMedioLista = (inicio, fin) => {
+            let medioListo = Math.floor((inicio + fin) / 2)
+            return medioListo;
+        }
+
+        buscarBinario = (listaNumeros, numero) => {
+            if (listaNumeros.includes(numero)){
+
+                let contador = 0;
+                let inicio = 0;
+                let fin = listaNumeros.length - 1;
+                let encontrado = false;
+
+                while (!encontrado) {
+                let medioLista = sacarMedioLista(inicio, fin)
+
+                if (listaNumeros[medioLista] == numero) {
+                    return `Se ha encontrado el numero ${numero} en ${contador} intentos.`;
+                    encontrado = true;
+                }
+
+                if (numero > listaNumeros[medioLista]) {
+                    inicio = medioLista + 1;
+                } else {
+                    fin = medioLista - 1;
+                }
+                contador++;
+                }
+            
+            }else{
+                return `El numero ${numero} no se encuentra en la lista. Vuleva a intentarlo`
+            }
+        }
+
+
+        listaNumeros = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+        console.log(buscarBinario(listaNumeros, 90));
+
+
+    </script>
+</body>
+
+</html>

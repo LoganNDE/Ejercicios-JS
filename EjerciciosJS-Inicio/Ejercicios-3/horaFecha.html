@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shuffle Array | Exercise 17</title>
+</head>
+<body>
+    <script>
+    
+        randomPositionList = (list) => {
+            listAux = [...list];
+            positionRep = [];
+            for(let i = 0; listAux.length > i; i++){
+                do{
+                    indexRandom = Math.floor((Math.random() * listAux.length))
+                }while(positionRep.includes(indexRandom))
+                
+                console.log(indexRandom);
+                positionRep.push(indexRandom);
+
+                aux = listAux[i]
+                listAux[i] = listAux[indexRandom]
+                listAux[indexRandom] = aux;
+            }
+            return listAux
+        }
+
+        originalList = ["l", "o", "g", "a", "n"]
+        console.log(originalList)
+        console.log(randomPositionList(originalList))
+    </script>
+</body>
+</html>

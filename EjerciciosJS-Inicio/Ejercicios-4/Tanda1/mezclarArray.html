@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mezclar Array | Ejercicio 17</title>
+</head>
+<body>
+    <script>
+    
+        listaPosicionesAleatorias = (lista) => {
+            listaAuxiliar = [...lista];
+            posicionesRepetidas = [];
+            for(let i = 0; listaAuxiliar.length > i; i++){
+                do{
+                    indiceAleatorio = Math.floor((Math.random() * listaAuxiliar.length))
+                }while(posicionesRepetidas.includes(indiceAleatorio))
+                
+                console.log(indiceAleatorio);
+                posicionesRepetidas.push(indiceAleatorio);
+
+                aux = listaAuxiliar[i]
+                listaAuxiliar[i] = listaAuxiliar[indiceAleatorio]
+                listaAuxiliar[indiceAleatorio] = aux;
+            }
+            return listaAuxiliar
+        }
+
+        listaOriginal = ["l", "o", "g", "a", "n"]
+        console.log(listaOriginal)
+        console.log(listaPosicionesAleatorias(listaOriginal))
+    </script>
+</body>
+</html>

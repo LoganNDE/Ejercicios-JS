@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buscar Palabra</title>
+</head>
+<body>
+    
+    <script>
+
+        buscarPalabra = (frase, cadena = null) => {
+            listaPalabras = [];
+            contador = 0;
+
+            if(cadena === null){
+                return "No se ha proporcionado ninguna cadena. Vuelve a intentarlo"
+            }
+            
+            if (frase.match(";")){
+                listaPalabras = frase.split(";");
+            }else if (frase.match(":")){
+                listaPalabras = frase.split(":");
+            }else if (frase.match(",")){
+                listaPalabras = frase.split(",");
+            }else if (frase.match("-")){
+                listaPalabras = frase.split("-");
+            }else if (frase.match(" ")){
+                listaPalabras = frase.split(" ");
+            }
+
+            for (let i = 0; i < listaPalabras.length; i++){
+                if (listaPalabras[i].match(cadena)){
+                    contador++;
+                }
+            }
+
+            return `En la frase "${frase}", la cadena "${cadena}" se ha repetido un total de ${contador} veces.`
+
+        }
+
+        console.log(buscarPalabra("Hola que que tal estas", "que"))
+
+
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Truncar Cadena</title>
+</head>
+<body>
+    
+
+    <script>
+
+        truncarCadena = (cadena, numeroTruncar, caracteres = "...") => {
+            numeroCaracteres = caracteres.length;
+
+            if (numeroTruncar < numeroCaracteres){
+                return "Error, no puede ser mayor el numero de caracteres que el número a truncar"
+            }else{
+
+                if ((cadena.length > numeroTruncar)){
+                    return cadena.slice(0,(numeroTruncar - numeroCaracteres)) + caracteres
+                }if ((cadena.length < numeroTruncar)){
+                    return cadena.length - (numeroTruncar - numeroCaracteres) + caracteres
+                }else{
+                    return cadena
+                }
+            }
+        }
+
+        console.log(truncarCadena('We are doing JS string exercises.')) 
+        console.log(truncarCadena('We are doing JS string exercises.',19)) 
+        console.log(truncarCadena('We are doing JS string exercises.',15,'!!')) 
+
+    </script>
+
+</body>
+</html>

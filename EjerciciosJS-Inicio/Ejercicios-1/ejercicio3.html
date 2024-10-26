@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Suma numero pares</title>
+</head>
+<body>
+    
+    <script>
+        window.onload = calcularSumaPares();
+
+        function calcularSumaPares(){
+            numeroCalcular = 1000
+            contador = 0;
+            sumaTotal = 0
+
+            while (contador <= numeroCalcular){
+                if (contador % 2 == 0){
+                    sumaTotal += contador;
+                    console.log(sumaTotal);
+                }
+                contador++;
+            }
+        }
+    </script>
+</body>
+</html>
