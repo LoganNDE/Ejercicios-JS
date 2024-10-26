@@ -2,42 +2,52 @@
 	<head>
 
 		<style>
+			*{
+				margin: 0;
+				padding: 0;
+			}
+
+
+			.wrapper{
+				height: 100vh;
+				display: flex;
+				align-items: center;
+				padding: 0px 40px;
+			}
+
 			body {
 				overflow:hidden;
 			}
 			
 			#paddle {
-				width: 40px;
-				height: 150px;
 				position: absolute;
 				top: calc(50% - 75px);
-				left: 50px;
-				background-color: #666666;
 			}
 
 			#ball {
-				width: 80px;
-				height: 80px;
 				position: absolute;
 				top: calc(50% - 40px);
-				left: calc(50% - 40px);
-				background-color: #AA0000;
-				border-radius: 40px;
-				
+				left: calc(50% - 40px);				
 			}
 
-			main{
+			.gameBoard{
+				position: relative;
 				width: 100%;
-				height: 90vh;
+				height: 85vh;
 				border: 1px solid black
 			}
+
+
+
 		</style>
 	</head>
 	<body>
-		<main>
-			<div id="paddle"><!-- paddle --></div>
-			<div id="ball"><!-- ball --></div>
-		</main>
+		<div class="wrapper">
+			<main class="gameBoard">
+				<div id="paddle"><!-- paddle --></div>
+				<div id="ball"><!-- ball --></div>
+			</main>
+		</div>
 	</body>	
 		<script>
 			const paddle = document.getElementById("paddle");
@@ -45,54 +55,93 @@
 			const gameBoard = document.querySelector("main")
 
 
+			//Caracteristicas de la pelota
+			let sizeBall = 80;
+			let colorBall = "blue";
+			//Calculo de radio de la pelota
+			let radiusBall = sizeBall/2;
+
+			
+			//configuraciones de la pelota
+			ball.style.width = sizeBall + "px";
+			ball.style.height = sizeBall + "px";
+			console.log(radiusBall)
+			ball.style.borderRadius = radiusBall + "px";
+			ball.style.backgroundColor = colorBall;
+
+
+			//Caracteristicas de la pala
+			let paddleWidth = 40;
+			let paddleHeight = 150;
+			let separationPaddle = 50;
+			let colorPaddle = "red";
+
+			//Configuracion de la pala
+			paddle.style.width = paddleWidth + "px"
+			paddle.style.height = paddleHeight + "px"
+			paddle.style.left = separationPaddle + "px"
+			paddle.style.backgroundColor = colorPaddle;
+
+
+			/*
 			const ball_radius = 0;
-		
 			var  velocicty = 30;
 			var angle = Math.random() * (Math.PI/2 - 0.25);
-
 			var velocity_x = velocicty *  Math.cos(angle);
 			var velocity_y = (Math.random()>0.5)?(-1):(1) * velocicty *  Math.sin(angle);
+			*/
+
+
+			var velocity_x = 5;
+			var velocity_y = 5;
+
 
 			//Add onkeypress handler
 			document.onkeypress = move_paddle;
 			
 			// Move ball
-			var ball_movement = setInterval(move_ball, 50);
+			var ball_movement = setInterval(move_ball, 10);
 
 			function move_ball(){
 				
 
 				//console.log(ball.offsetTop);
-				console.log("Altura del tablero: " + gameBoard.offsetHeight)
-				console.log(ball.offsetTop + ball.offsetHeight);
+				//console.log("Altura del tablero: " + gameBoard.offsetHeight)
+				//console.log(ball.offsetTop + ball.offsetHeight);
 				//console.log(window.innerHeight);
 
 
 				//Check Top
-				if (ball.offsetTop - ball_radius <= 0) {
+				if (ball.offsetTop <= 0) {
 					velocity_y = -velocity_y;
 				}
 
 				//Check right
-				if (ball.offsetLeft + ball_radius >= window.innerWidth) {
+				if (ball.offsetLeft + radiusBall * 2 >= gameBoard.offsetWidth) {
 					velocity_x = -velocity_x;
 				}
 
 				//Check bottom
-				if ((ball.offsetTop + ball.offsetHeight) >= gameBoard.offsetHeight) {
+				if ((ball.offsetTop + radiusBall * 2 ) >= gameBoard.offsetHeight) {
 					console.log("abajo")
 					velocity_y = -velocity_y;
 				}
 
 				//Check left
-				if (ball.offsetLeft <= 0) {
+				if (ball.offsetLeft <= 1) {
 					clearInterval(ball_movement);
 					alert ("You lose");
 					location.reload();
 				}
 
 				// Check collision
-				if (ball.offsetLeft - ball_radius <= 90 && ball.offsetTop<=(paddle.offsetTop+75) && ball.offsetTop>=(paddle.offsetTop-75)) {
+				//if (ball.offsetLeft - ball_radius <= 90 && ball.offsetTop<=(paddle.offsetTop+75) && ball.offsetTop>=(paddle.offsetTop-75)) {
+				//	velocity_x = -velocity_x;
+				//}
+
+				console.log(paddle.offsetTop)
+				// Check collision
+				if (ball.offsetLeft <= (paddleWidth + separationPaddle) && (ball.offsetTop + radiusBall) <= (paddle.offsetTop + paddleHeight) && (ball.offsetTop + radiusBall)>=(paddle.offsetTop)) {
 					velocity_x = -velocity_x;
 				}
 				
@@ -104,11 +153,20 @@
 			function move_paddle(pkey){
 				// console.log("tecla pulsada: " + pkey.which);  
 
+				//|| paddle.style.top == gameBoard.style.height
+				/*if (paddle.offsetTop <= 10){
+					console.log("desborde")
+					return
+				}
+
+				*/
+
 				if (pkey.which == 56){
 					paddle.style.top = (paddle.offsetTop - 10) +"px";
 				} else if (pkey.which == 50){
 					paddle.style.top = (paddle.offsetTop + 10) +"px";
 				}
+
 			}
 		</script>
 </html>
