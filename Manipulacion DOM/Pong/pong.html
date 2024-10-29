@@ -2,6 +2,9 @@
 	<head>
 
 		<style>
+
+			@import url('https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&display=swap');
+			
 			*{
 				margin: 0;
 				padding: 0;
@@ -9,7 +12,7 @@
 			}
 
 
-			.wrapper{
+			.wrapperGame{
 				height: 100vh;
 				position: relative;
 				display: flex;
@@ -37,6 +40,9 @@
 
 			.gameBoard{
 				position: relative;
+				width: 100%;
+				height: 85vh;
+				border: 1px solid black
 			}
 
 			.icons{
@@ -61,12 +67,119 @@
 				height: 75px;
 			}
 
+			.wrapperMain{
+				width: 100%;
+				height: 100vh;
+				background-color: black;
+			}
+
+			.mainContent{
+				padding: 20px 0px;
+				height: 100%;
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+				align-items: center;
+			}
+
+			.logoImage{
+				width: 35%;
+				margin-bottom: 40px;
+			}
+
+
+			.btnOptions >*{
+				color: rgb(255, 255, 255);
+				list-style: none;
+				background:  #d65182;
+				border: solid 2px white;
+				padding: 16px 120px;
+				margin: 14px 0px;
+				text-align: center;
+				font-family: "Silkscreen", sans-serif;
+				font-weight: 600;
+				font-style: normal;
+				transition: all 0.3s;
+				cursor: pointer;
+			}
+
+			
+			.btnOptions >*:hover{
+				transform: scale(1.06);
+			}
+
+			.hiddenContent{
+				display: none !important;
+			}
+
+			.gameOver{
+				position: fixed;
+				width: 100%;
+				height: 100vh;
+				background-color: rgba(0, 0, 0, 0.501);
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				top: 0;
+				left: 0;
+				z-index: 10;
+			}
+
+			.gameOverCard{
+				border-radius: 5px;
+				min-width: 800px;
+				min-height: 300px;
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+			}
+
+			.gameOverTitle{
+				text-align: center;
+				font-family: "Silkscreen", sans-serif;
+				font-weight: 700;
+				font-style: normal;
+				font-size: 64px;
+				color: rgb(255, 25, 25)
+			}
+
+			.gameOverOptions .btnOptions{
+				display: flex;
+				flex-direction: row;
+				gap: 20px;
+				justify-content: center;
+				align-items: center;
+			}
+
+			.gameOverOptions .btnOptions > *{
+				padding: 16px 40px;
+			}
 
 
 		</style>
 	</head>
 	<body>
-		<div class="wrapper">
+		<div class="wrapperMain">
+			<main class="mainContent">
+				<!--
+					<video autoplay="autoplay" loop="loop" id="video_pattern" preload="auto" volume="50">
+  						<source src="/Manipulacion DOM/Pong/82515-580137713_small(1).mp4" type="video/mp4"/>
+					</video>
+				-->
+				<img class="logoImage" src="logoPong.png" alt="logo-web">
+					
+				<div class="menuOptions">
+					<ul class="btnOptions">
+						<li class="gameOnePlayer">Un Jugador</li>
+						<li>2 jugadore</li>
+						<li>Opciones</li>
+					</ul>
+				</div>
+			</main>
+		</div>
+
+
+		<div class="wrapperGame hiddenContent">
 			<div class="icons">
 				<span class="iconsGame">
 					<?xml version="1.0" encoding="utf-8"?><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
@@ -91,14 +204,34 @@
 			<main class="gameBoard">
 				<div id="paddle"><!-- paddle --></div>
 				<div id="ball"><!-- ball --></div>
-			</main>
+			</main>	
 		</div>
+
+		<div class="gameOver hiddenContent">
+			<div class="gameOverCard">
+				<h1 class="gameOverTitle">Game Over</h1>
+				<div class="gameOverOptions">
+					<ul class="btnOptions">
+						<li class="playAgain">Jugar de nuevo</li>
+						<li class="backMenu">Menú princcipal</li>
+					</ul>
+				</div>	
+			</div>
+		</div>
+
 	</body>	
 		<script>
 			const paddle = document.getElementById("paddle");
 			const ball = document.getElementById("ball");
-			const gameBoard = document.querySelector("main")
+			const gameBoard = document.querySelector(".gameBoard")
+			const wrapperMain = document.querySelector(".wrapperMain")
+			const wrapperGame = document.querySelector(".wrapperGame")
+			const gameOnePlayer = document.querySelector(".gameOnePlayer")
+			const gameOver = document.querySelector(".gameOver")
 
+			var ball_movement = null;
+			var velocity_x = null;
+			var velocity_y = null;
 
 			//Caracteristicas del tablero
 			let widthBoard = 1800;
@@ -151,6 +284,16 @@
 			var velocity_y = (Math.random()>0.5)?(-1):(1) * velocicty *  Math.sin(angle);
 			*/
 
+			gameOnePlayer.addEventListener("click", () => {
+				wrapperMain.classList.add("hiddenContent");
+				wrapperGame.classList.remove("hiddenContent");
+				ball_movement = setInterval(move_ball, 10);
+				velocity_x = 5;
+				velocity_y = 5;
+			})
+
+
+
 
 			var velocity_x = 2;
 			var velocity_y = 2;
@@ -160,7 +303,6 @@
 			document.onkeypress = move_paddle;
 			
 			// Move ball
-			var ball_movement = setInterval(move_ball, 10);
 
 			function move_ball(){
 				
@@ -189,10 +331,30 @@
 
 				//Check left
 				if (ball.offsetLeft <= 1) {
-					clearInterval(ball_movement);
-					alert ("You lose");
-					location.reload();
+//El jugador ha perdido
+clearInterval(ball_movement)
+					gameOver.classList.remove("hiddenContent")
+
+					const playAgain = document.querySelector(".playAgain")
+					const backHome = document.querySelector(".backMenu")
+
+
+					playAgain.addEventListener("click", () =>{
+						ball_movement = setInterval(move_ball, 10);
+					})
+
+					
+					backHome.addEventListener("click", () =>{
+						wrapperMain.classList.remove("hiddenContent");
+						gameOver.classList.add("hiddenContent")
+						wrapperGame.classList.add("hiddenContent");
+					})
 				}
+
+				// Check collision
+				//if (ball.offsetLeft - ball_radius <= 90 && ball.offsetTop<=(paddle.offsetTop+75) && ball.offsetTop>=(paddle.offsetTop-75)) {
+				//	velocity_x = -velocity_x;
+				//}
 
 				console.log(paddle.offsetTop)
 				// Check collision
