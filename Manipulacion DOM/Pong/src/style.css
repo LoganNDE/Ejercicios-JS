@@ -1,0 +1,155 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&display=swap');
+			
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+.wrapperGame{
+    height: 100vh;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0px 40px;
+    background-color: #1A1A2E;
+}
+
+body {
+    overflow:hidden;
+}
+
+#paddle {
+    position: absolute;
+    top: calc(50% - 75px);
+}
+
+#ball {
+    position: absolute;
+    top: calc(50% - 40px);
+    left: calc(50% - 40px);				
+}
+
+.gameBoard{
+    position: relative;
+    width: 100%;
+    height: 85vh;
+}
+
+.icons{
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 75px;
+    gap: 10px;
+}
+
+.iconsGame svg{
+    display: inline-block;
+    color: white;
+    height: 45px;
+    width: 45px;
+    cursor: pointer;
+}
+
+.wrapperMain{
+    width: 100%;
+    height: 100vh;
+    background-color: black;
+}
+
+.mainContent{
+    padding: 20px 0px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.logoImage{
+    width: 35%;
+    margin-bottom: 40px;
+}
+
+
+.btnOptions >*{
+    color: rgb(255, 255, 255);
+    list-style: none;
+    background:  #d65182;
+    border: solid 2px white;
+    padding: 16px 120px;
+    margin: 14px 0px;
+    text-align: center;
+    font-family: "Silkscreen", sans-serif;
+    font-weight: 600;
+    font-style: normal;
+    transition: all 0.3s;
+    cursor: pointer;
+}
+
+
+.btnOptions >*:hover{
+    transform: scale(1.06);
+}
+
+.hiddenContent{
+    display: none !important;
+}
+
+.backgroundLayer{
+    position: fixed;
+    width: 100%;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.501);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 0;
+    left: 0;
+    z-index: 10;
+}
+
+.gameOverCard{
+    border-radius: 5px;
+    min-width: 800px;
+    min-height: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.gameOverTitle{
+    text-align: center;
+    font-family: "Silkscreen", sans-serif;
+    font-weight: 700;
+    font-style: normal;
+    font-size: 64px;
+    color: rgb(255, 25, 25)
+}
+
+.gameOverOptions .btnOptions{
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    justify-content: center;
+    align-items: center;
+}
+
+.gameOverOptions .btnOptions > *{
+    padding: 16px 40px;
+}
+
+.settingsCard{
+    background-color: #d65182;
+    height: 400px;
+    width: 600px;
+    z-index: 10;
+}
+
