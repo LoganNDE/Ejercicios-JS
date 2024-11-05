@@ -174,9 +174,10 @@
         let paddleHeightStn = document.querySelector("#paddleHeightStn");
         let paddleWidthStn = document.querySelector("#paddleWidthStn");
 
-        ballSize = ballSizeStn.value;
-        paddleHeight = paddleHeightStn.value;
-        paddleWidth = paddleWidthStn.value;
+        ballSize = Number(ballSizeStn.value ? Number(ballSizeStn.value) : 80);
+        paddleHeight = Number(paddleHeightStn.value) ? Number(paddleHeightStn.value) : 150;
+        paddleWidth = Number(paddleWidthStn.value) ? Number(paddleWidthStn.value) : 40;
+        radiusBall = ballSize/2;
 
         applySettingsBall();
         applySettingsPaddle();
@@ -184,6 +185,7 @@
     })
 
     bntPause.addEventListener("click", () =>{
+        console.log(gamePaused);
         if (!gamePaused){
             clearInterval(ball_movement)
             gamePaused = true;        
@@ -204,7 +206,6 @@
     //document.onkeydown = move_paddle;
 
     document.addEventListener("keydown", (event) =>{
-        console.log(event.key)
 
         if(event.key == "a"){
             moveUP = true;
@@ -217,16 +218,17 @@
         if (event.key == "Escape" && !settingsShow){
             showSettings();
             clearInterval(ball_movement)
-            settingsShow = true;        
+            settingsShow = true;
+            gamePaused = true;
         }else if (event.key == "Escape" && settingsShow){
             hiddeSettings();
             ball_movement = setInterval(move_ball, 10);
             settingsShow = false;
+            gamePaused = false;
         }
     })
 
     document.addEventListener("keyup", (event) =>{
-        console.log(event.key)
 
         if(event.key == "a"){
             moveUP = false;
@@ -240,8 +242,6 @@
 
     // Move ball
     function move_ball(){
-        console.log("Velcoidad X: " + velocity_x);
-        console.log("Velcoidad Y: "+ velocity_y);
 
         //Check Top
         if (ball.offsetTop <= 0) {
@@ -250,6 +250,7 @@
 
         //Check right
         if (ball.offsetLeft + radiusBall * 2 >= gameBoard.offsetWidth - (borderBoard + (borderBoard/2))) {
+            console.log(radiusBall);
             velocity_x = -velocity_x;
         }
 
@@ -267,21 +268,23 @@
             gameOverLayer();
         }
 
-        console.log(paddle.offsetTop)
+        console.log("Colision con la pala " + (paddleWidth + separationPaddle))
+        console.log("OffsetLeft de la pelota " + ball.offsetLeft)    
         // Check collision
-        if (ball.offsetLeft <= (paddleWidth + separationPaddle) && (ball.offsetTop + radiusBall) <= (paddle.offsetTop + paddleHeight) && (ball.offsetTop + radiusBall)>=(paddle.offsetTop)) {
+        if (ball.offsetLeft <= (paddleWidth + separationPaddle)){
             velocity_x = -velocity_x;
         }
         
+        //&& (ball.offsetTop + (radiusBall/2)) <= (paddle.offsetTop + paddleHeight)) 
+
+        //&&  && (ball.offsetTop + (radiusBall*2))>=(paddle.offsetTop)
+
         ball.style.top = (ball.offsetTop + velocity_y) +"px";
         ball.style.left = (ball.offsetLeft + velocity_x) +"px";
 
     }
 
     function move_paddle(){
-
-        console.log("Recorrido paleta:" + (paddle.offsetTop + paddle.offsetHeight));
-        console.log("Altura del juego:" + (gameBoard.offsetHeight));
 
         if (moveUP && paddle.offsetTop > 0){
             paddle.style.top = (paddle.offsetTop - 2) +"px";
