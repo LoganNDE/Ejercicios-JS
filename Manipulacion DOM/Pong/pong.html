@@ -5,6 +5,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Pong Game | Logan Naranjo Rodriguez</title>
 	<link rel="stylesheet" href="src/style.css">
+	<script src="https://kit.fontawesome.com/9f16feb66e.js" crossorigin="anonymous"></script>
 </head>
 <body>
 
@@ -15,8 +16,8 @@
 			<div class="menuOptions">
 				<ul class="btnOptions">
 					<li class="gameOnePlayer">Un Jugador</li>
-					<li>2 jugadore</li>
-					<li>Opciones</li>
+					<li class="gameTwoPlayers">2 jugadore</li>
+					<li class="btnSettingsHome">Opciones</li>
 				</ul>
 			</div>
 		</main>
@@ -46,7 +47,8 @@
 			</span>
 		</div>
 		<main class="gameBoard">
-			<div id="paddle"><!-- paddle --></div>
+			<div class="p-left"><!-- paddle --></div>
+			<div class="p-right hiddenContent"><!-- paddle --></div>
 			<div id="ball"><!-- ball --></div>
 		</main>	
 	</div>
@@ -70,6 +72,8 @@
 		<!-- PANTALLA  SETTINGS-->
 		<div class="backgroundLayer hiddenContent" id="settings">
 			<div class="settingsCard">
+				
+				<span class="closeSettings"><i class="fa-solid fa-xmark"></i></span>
 				<h1 class="settingsTitle">Ajustes</h1>
 					<input type="number" id="ballSizeStn" placeholder="Tamaño pelota" value="80">
 					<input type="number" id="paddleHeightStn" placeholder="Altura de la pala" value="150">

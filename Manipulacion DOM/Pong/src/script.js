@@ -1,17 +1,22 @@
-    const paddle = document.getElementById("paddle");
+    const paddleLeft = document.querySelector(".p-left");
+    const paddleRight = document.querySelector(".p-right");
     const ball = document.getElementById("ball");
     const gameBoard = document.querySelector(".gameBoard");
     const gameOnePlayer = document.querySelector(".gameOnePlayer");
+    const gameTwoPlayers = document.querySelector(".gameTwoPlayers");
+    const btnSettingsHome = document.querySelector(".btnSettingsHome");
     const btnSettings = document.querySelector(".btnStn");
+    const closeSettings = document.querySelector(".closeSettings");
     const bntPause = document.querySelector(".btnPause");
     const btnHome = document.querySelector(".btnHome");
     const btnConfirmStg = document.querySelector("#btnConfirmStn");
     
-    var loseGame = false;
+    var gameOn = false; //Indicamos que el no ha empezado
     let moveUP = false;
     let moveDown = false;
     let settingsShow = false;
     let gamePaused = false;
+    let twoPlayers = false;
 
 
 
@@ -57,18 +62,25 @@
     let colorPaddle = "#ECECEC";
 
 
-    applySettingsPaddle = () =>{
+    applySettingsPaddleLeft = () =>{
     //Configuracion de la pala
-    paddle.style.width = paddleWidth + "px"
-    paddle.style.height = paddleHeight + "px"
-    paddle.style.left = separationPaddle + "px"
-    paddle.style.backgroundColor = colorPaddle;
+    paddleLeft.style.width = paddleWidth + "px"
+    paddleLeft.style.height = paddleHeight + "px"
+    paddleLeft.style.left = separationPaddle + "px"
+    paddleLeft.style.backgroundColor = colorPaddle;
+    }
+
+    applySettingsPaddleRight = () =>{
+        paddleRight.style.width = paddleWidth + "px"
+        paddleRight.style.height = paddleHeight + "px"
+        paddleRight.style.right = separationPaddle + "px"
+        paddleRight.style.backgroundColor = colorPaddle;
     }
 
 
     //Aplciar configuracion por defecto de los elemetos del videojuego
     applySettingsBall();
-    applySettingsPaddle();
+    applySettingsPaddleLeft();
     applySettingsBoard();
 
 
@@ -121,6 +133,14 @@
         settings.classList.remove("hiddenContent");
     }
 
+    hiddePaddleRight = () =>{
+        paddleRight.classList.add("hiddenContent");
+    }
+
+    showPaddleRight = () =>{
+        paddleRight.classList.remove("hiddenContent");
+    }
+
     gameOverLayer = () =>{
         var playAgain = document.querySelector(".playAgain")
         var backHome = document.querySelector(".backMenu")
@@ -128,7 +148,6 @@
         playAgain.addEventListener("click", () =>{
             hiddeGameOver();
             restartGame();
-            loseGame = false;
         })
 
         backHome.addEventListener("click", () =>{
@@ -136,7 +155,7 @@
             hiddeGame();
             showMenu();
             clearInterval(ball_movement)
-            loseGame = false;
+            gameOn = false;
         })
     }
 
@@ -147,20 +166,61 @@
         velocity_y = 5;
     }
 
-    restartPositionPaddle = () =>{
-        paddle.style.top = "calc(50% - 75px)";
+    restartPositionPaddleLeft = () =>{
+        paddleLeft.style.top = "calc(50% - 75px)";
+    }
+
+    restartPositionPaddleRight = () =>{
+        paddleLeft.style.top = "calc(50% - 75px)";
     }
 
     restartGame = () =>{
         restartPositionBall();
         ball_movement = setInterval(move_ball, 10);
-        restartPositionPaddle();
+        restartPositionPaddleLeft();
+        if (twoPlayers){
+            restartPositionPaddleRight();
+        }
     }
 
     gameOnePlayer.addEventListener("click", () => {
+        gameOn = true;
+        twoPlayers = false;
+        hiddePaddleRight();
         hiddeMenu();
         showGame();
         restartGame();
+    })
+
+    gameTwoPlayers.addEventListener("click", () =>{
+        gameOn = true;
+        twoPlayers = true;
+        move_paddleRight();
+        
+        hiddeMenu();
+        showGame();
+        restartGame();
+        showPaddleRight();
+        applySettingsPaddleRight();
+    })
+
+    btnSettingsHome.addEventListener("click", () => {
+        if (!settingsShow){
+            showSettings();
+            settingsShow = true;
+        }
+    })
+
+
+    closeSettings.addEventListener("click", () =>{
+        if (settingsShow){
+            hiddeSettings();
+            settingsShow = false;
+            if (gameOn){
+                ball_movement = setInterval(move_ball, 10);
+                gamePaused = false;
+            }
+        }
     })
 
     btnSettings.addEventListener("click", () => {
@@ -180,7 +240,10 @@
         radiusBall = ballSize/2;
 
         applySettingsBall();
-        applySettingsPaddle();
+        applySettingsPaddleLeft();
+        if (twoPlayers){
+            applySettingsPaddleLeft();
+        }
         applySettingsBoard();
     })
 
@@ -199,11 +262,12 @@
         clearInterval(ball_movement);
         hiddeGame();
         showMenu();
+        gameOn = false;
     })
 
 
     //Add onkeypress handler
-    //document.onkeydown = move_paddle;
+    //document.onkeydown = move_paddleLeft;
 
     document.addEventListener("keydown", (event) =>{
 
@@ -222,9 +286,11 @@
             gamePaused = true;
         }else if (event.key == "Escape" && settingsShow){
             hiddeSettings();
-            ball_movement = setInterval(move_ball, 10);
+            if (gameOn){
+                ball_movement = setInterval(move_ball, 10);
+                gamePaused = false;
+            }
             settingsShow = false;
-            gamePaused = false;
         }
     })
 
@@ -237,6 +303,8 @@
         if (event.key == "z"){
             moveDown = false;
         }
+
+
     })
 
 
@@ -262,38 +330,50 @@
 
         //Check left - Game Lose
         if (ball.offsetLeft <= 0) {
-            loseGame = true;
             clearInterval(ball_movement)
             showGameOver();
             gameOverLayer();
         }
-
-        console.log("Colision con la pala " + (paddleWidth + separationPaddle))
-        console.log("OffsetLeft de la pelota " + ball.offsetLeft)    
+ 
         // Check collision
-        if (ball.offsetLeft <= (paddleWidth + separationPaddle)){
+        if (ball.offsetLeft <= (paddleWidth + separationPaddle) && (ball.offsetTop + radiusBall <= paddleLeft.offsetTop + paddleHeight) && (ball.offsetTop + radiusBall >= paddleLeft.offsetTop)){
             velocity_x = -velocity_x;
         }
-        
-        //&& (ball.offsetTop + (radiusBall/2)) <= (paddle.offsetTop + paddleHeight)) 
 
-        //&&  && (ball.offsetTop + (radiusBall*2))>=(paddle.offsetTop)
+        // Check collision
+        //if (ball.offsetLeft <= (paddleWidth + separationPaddle) && (ball.offsetTop + radiusBall <= paddleRight.offsetTop + paddleHeight) && (ball.offsetTop + radiusBall >= paddleRight.offsetTop)){
+        //    velocity_x = -velocity_x;
+        //}
 
         ball.style.top = (ball.offsetTop + velocity_y) +"px";
         ball.style.left = (ball.offsetLeft + velocity_x) +"px";
 
     }
 
-    function move_paddle(){
+    function move_paddleLeft(){
 
-        if (moveUP && paddle.offsetTop > 0){
-            paddle.style.top = (paddle.offsetTop - 2) +"px";
-        } else if (moveDown && (paddle.offsetTop + paddle.offsetHeight) <= (gameBoard.offsetHeight - (borderBoard*2))){
-            paddle.style.top = (paddle.offsetTop + 2) +"px";
+        if (moveUP && paddleLeft.offsetTop > 0){
+            paddleLeft.style.top = (paddleLeft.offsetTop - 2) +"px";
+        } else if (moveDown && (paddleLeft.offsetTop + paddleLeft.offsetHeight) <= (gameBoard.offsetHeight - (borderBoard*2))){
+            paddleLeft.style.top = (paddleLeft.offsetTop + 2) +"px";
         }
 
-        requestAnimationFrame(move_paddle);
+        requestAnimationFrame(move_paddleLeft);
 
     }
 
-    move_paddle();
+    function move_paddleRight(){
+
+        if (moveUP && paddleRight.offsetTop > 0){
+            console.log("me muevo arriba RIGHT")
+            paddleRight.style.top = (paddleRight.offsetTop - 2) +"px";
+        } else if (moveDown && (paddleRight.offsetTop + paddleRight.offsetHeight) <= (gameBoard.offsetHeight - (borderBoard*2))){
+            console.log("me muevo ABAJO RIGHT")
+            paddleRight.style.top = (paddleRight.offsetTop + 2) +"px";
+        }
+
+        requestAnimationFrame(move_paddleRight);
+
+    }
+
+    move_paddleLeft();

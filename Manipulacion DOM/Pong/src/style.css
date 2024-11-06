@@ -23,10 +23,18 @@ body {
     overflow:hidden;
 }
 
-#paddle {
+.p-left{
+    top: calc(50% - 75px);
+    position: absolute;
+}
+
+.p-right{
     position: absolute;
     top: calc(50% - 75px);
+    right: 20px;
 }
+
+
 
 #ball {
     position: absolute;
@@ -151,5 +159,9 @@ body {
     height: 400px;
     width: 600px;
     z-index: 10;
+}
+
+.closeSettings:hover{
+    cursor: pointer;
 }
 
