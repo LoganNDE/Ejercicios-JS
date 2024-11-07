@@ -12,10 +12,13 @@
     const btnConfirmStg = document.querySelector("#btnConfirmStn");
     
     var gameOn = false; //Indicamos que el no ha empezado
-    let moveUP = false;
-    let moveDown = false;
+    let moveUPLeft = false;
+    let moveDownLeft = false;
+    let moveUPRight = false;
+    let moveDownRight = false;
+
+
     let settingsShow = false;
-    let gamePaused = false;
     let twoPlayers = false;
 
 
@@ -175,6 +178,7 @@
     }
 
     restartGame = () =>{
+        gamePaused = false;
         restartPositionBall();
         ball_movement = setInterval(move_ball, 10);
         restartPositionPaddleLeft();
@@ -195,7 +199,7 @@
     gameTwoPlayers.addEventListener("click", () =>{
         gameOn = true;
         twoPlayers = true;
-        move_paddleRight();
+
         
         hiddeMenu();
         showGame();
@@ -272,11 +276,19 @@
     document.addEventListener("keydown", (event) =>{
 
         if(event.key == "a"){
-            moveUP = true;
+            moveUPLeft = true;
         }
 
         if (event.key == "z"){
-            moveDown = true;
+            moveDownLeft = true;
+        }
+
+        if(twoPlayers && event.key == "k"){
+            moveUPRight = true;
+        }
+
+        if (twoPlayers && event.key == "m"){
+            moveDownRight = true;
         }
 
         if (event.key == "Escape" && !settingsShow){
@@ -297,15 +309,23 @@
     document.addEventListener("keyup", (event) =>{
 
         if(event.key == "a"){
-            moveUP = false;
+            moveUPLeft = false;
         }
 
         if (event.key == "z"){
-            moveDown = false;
+            moveDownLeft = false;
         }
 
+        if(twoPlayers && event.key == "k"){
+            moveUPRight = false;
+        }
+
+        if (twoPlayers && event.key == "m"){
+            moveDownRight = false;
+        }
 
     })
+
 
 
     // Move ball
@@ -317,19 +337,24 @@
         }
 
         //Check right
-        if (ball.offsetLeft + radiusBall * 2 >= gameBoard.offsetWidth - (borderBoard + (borderBoard/2))) {
+        if (ball.offsetLeft + (radiusBall * 2) >= (gameBoard.offsetWidth - borderBoard)) {
             console.log(radiusBall);
             velocity_x = -velocity_x;
         }
 
         //Check bottom
-        if ((ball.offsetTop + radiusBall * 2 ) >= (gameBoard.offsetHeight - (borderBoard + (borderBoard/2)))) {
-            console.log("abajo")
+        if ((ball.offsetTop + radiusBall * 2 ) >= (gameBoard.offsetHeight - borderBoard)) {
             velocity_y = -velocity_y;
         }
 
+
+
         //Check left - Game Lose
         if (ball.offsetLeft <= 0) {
+            clearInterval(ball_movement)
+            showGameOver();
+            gameOverLayer();
+        }else if ((twoPlayers) && (ball.offsetLeft + (radiusBall * 2) >= (gameBoard.offsetWidth - borderBoard))){
             clearInterval(ball_movement)
             showGameOver();
             gameOverLayer();
@@ -341,9 +366,9 @@
         }
 
         // Check collision
-        //if (ball.offsetLeft <= (paddleWidth + separationPaddle) && (ball.offsetTop + radiusBall <= paddleRight.offsetTop + paddleHeight) && (ball.offsetTop + radiusBall >= paddleRight.offsetTop)){
-        //    velocity_x = -velocity_x;
-        //}
+        if (twoPlayers && ball.offsetLeft + (radiusBall * 2) >= paddleRight.offsetLeft && ball.offsetTop + radiusBall <= paddleRight.offsetTop + paddleHeight && (ball.offsetTop + radiusBall >= paddleRight.offsetTop)){
+            velocity_x = -velocity_x;
+        }
 
         ball.style.top = (ball.offsetTop + velocity_y) +"px";
         ball.style.left = (ball.offsetLeft + velocity_x) +"px";
@@ -352,9 +377,10 @@
 
     function move_paddleLeft(){
 
-        if (moveUP && paddleLeft.offsetTop > 0){
+        if (moveUPLeft && paddleLeft.offsetTop > 0){
             paddleLeft.style.top = (paddleLeft.offsetTop - 2) +"px";
-        } else if (moveDown && (paddleLeft.offsetTop + paddleLeft.offsetHeight) <= (gameBoard.offsetHeight - (borderBoard*2))){
+        } else if (moveDownLeft
+     && (paddleLeft.offsetTop + paddleLeft.offsetHeight) <= (gameBoard.offsetHeight - (borderBoard*2))){
             paddleLeft.style.top = (paddleLeft.offsetTop + 2) +"px";
         }
 
@@ -364,11 +390,9 @@
 
     function move_paddleRight(){
 
-        if (moveUP && paddleRight.offsetTop > 0){
-            console.log("me muevo arriba RIGHT")
+        if (moveUPRight && paddleRight.offsetTop > 0){
             paddleRight.style.top = (paddleRight.offsetTop - 2) +"px";
-        } else if (moveDown && (paddleRight.offsetTop + paddleRight.offsetHeight) <= (gameBoard.offsetHeight - (borderBoard*2))){
-            console.log("me muevo ABAJO RIGHT")
+        } else if (moveDownRight && (paddleRight.offsetTop + paddleRight.offsetHeight) <= (gameBoard.offsetHeight - (borderBoard*2))){
             paddleRight.style.top = (paddleRight.offsetTop + 2) +"px";
         }
 
@@ -377,3 +401,4 @@
     }
 
     move_paddleLeft();
+    move_paddleRight();
