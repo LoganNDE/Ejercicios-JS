@@ -332,3 +332,7 @@ label{
     font-size: 60px;
 }
 
+.stopMusic:hover{
+    cursor: pointer;
+}
+
