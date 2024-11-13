@@ -1,5 +1,7 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&display=swap');
+@import url("https://fonts.googleapis.com/css?family=Nunito:400,700&display=swap");
+@import url("https://fonts.googleapis.com/css?family=M+PLUS+1p:400,700&display=swap");
 			
 *{
     margin: 0;
@@ -16,7 +18,7 @@
     align-items: center;
     justify-content: center;
     padding: 0px 40px;
-    background-color: #1A1A2E;
+    background-color: #000000;
 }
 
 body {
@@ -44,8 +46,6 @@ body {
 
 .gameBoard{
     position: relative;
-    width: 100%;
-    height: 85vh;
 }
 
 .icons{
@@ -115,7 +115,7 @@ body {
     position: fixed;
     width: 100%;
     height: 100vh;
-    background-color: rgba(0, 0, 0, 0.501);
+    background-color: rgba(0, 0, 0, 0.822);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -155,13 +155,180 @@ body {
 }
 
 .settingsCard{
+    position: relative;
     background-color: #d65182;
+    border: solid 2px white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     height: 400px;
-    width: 600px;
+    width: 1200px;
     z-index: 10;
+}
+
+.settingsTitle{
+    margin-top: 15px;
+    color: white;
+    font-family: "Silkscreen", sans-serif;
+}
+
+.retro-input {
+    outline: none;
+    margin:8px 10px;
+    padding: 7px 0 3px 14px;
+    border: 3px solid rgb(150, 150, 150);
+    box-shadow: 0px 0px 0px 1px rgb(90, 90, 90),
+      inset 0px 0px 0px 1px rgb(90, 90, 90),
+      1px 2px 0px 2px rgb(100, 100, 100);
+    border-radius: 0.3em;
+    color: rgb(50, 50, 50);
+    font-family: "Silkscreen", sans-serif;
+    font-size: 20px;
+  }
+
+  .inputWidthFix{
+    width: 342px;
+  }
+
+
+    /* Chrome, Safari, Edge, Opera  [Oculta las flechas en los input number]*/ 
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+    }
+
+    /* Firefox [Oculta las flechas en los input number]*/
+    input[type=number] {
+    -moz-appearance: textfield;
+    }
+
+  .retro-input:focus {
+    box-shadow: 0px 0px 0px 1px rgb(90, 90, 90),
+      inset 0px 0px 0px 1px rgb(90, 90, 90),
+      1px 2px 0px 1px rgb(100, 100, 100);
+  }
+
+  .retro-button-filled {
+    padding: 5px 15px;
+    margin: 15px;
+    outline: none;
+    border: 3px solid white;
+    box-shadow: 0px 0px 0px 1px rgb(90, 90, 90),
+      inset 0px 0px 0px 1px rgb(90, 90, 90),
+      0px 2px 0px 2px rgb(100, 100, 100);
+    text-shadow: 0px -1px rgb(90, 90, 90),
+      -1px 0px rgb(90, 90, 90);
+    border-radius: 0.3em;
+    color: white;
+    background-color: rgb(90, 90, 90);
+    font-family: "Silkscreen", sans-serif;
+    font-size: 1.3em;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+
+  .retro-button-filled:active {
+    background-color: rgb(75, 75, 75);
+    box-shadow: 0px 0px 0px 1px rgb(90, 90, 90),
+      inset 0px 0px 0px 1px rgb(90, 90, 90),
+      0px 1px 0px 2px rgb(100, 100, 100);
+  }
+
+  .green {
+    background-color: rgb(75, 135, 71);
+    box-shadow: 0px 0px 0px 1px rgb(75, 135, 71),
+                inset 0px 0px 0px 1px rgb(75, 135, 71),
+                0px 2px 0px 2px rgb(85, 134, 82);
+  }
+  .green:active {
+    background-color: rgb(54, 138, 48);
+    box-shadow: 0px 0px 0px 1px rgb(54, 138, 48),
+                inset 0px 0px 0px 1px rgb(54, 138, 48),
+                0px 1px 0px 2px rgb(64, 137, 60);
+  }
+
+.closeSettings{
+    font-family: "Silkscreen", sans-serif;
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 24px;
+    font-weight: 700;
+    color: white;
 }
 
 .closeSettings:hover{
     cursor: pointer;
+}
+
+.containerSaveChanges{
+    margin: 10px 0px;
+    display: flex;
+    width: 100%;
+    justify-content: center;
+}
+
+.settingsOptions{
+    padding-top: 15px;
+    display: flex;
+    flex-direction: row;
+}
+
+.settingsOptions > *{
+    display: flex;
+    flex-direction: column;
+}
+
+label{
+    font-family: "Silkscreen", sans-serif;
+    margin-left: 10px;
+    color: white;
+}
+
+.keyOptions{
+    display: flex;
+    gap: 5px;
+}
+
+.key{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50px;
+    outline: none;
+    margin:8px 0px 8px 10px;
+    padding: 5px 0 5px 0px;
+    border: 3px solid rgb(150, 150, 150);
+    box-shadow: 0px 0px 0px 1px rgb(90, 90, 90),
+      inset 0px 0px 0px 1px rgb(90, 90, 90),
+      1px 2px 0px 2px rgb(100, 100, 100);
+    border-radius: 0.3em;
+    color: rgb(50, 50, 50);
+    background-color: white;
+    font-family: "Silkscreen", sans-serif;
+    font-size: 20px;
+}
+
+.key:hover{
+    cursor: pointer;
+}
+
+.titleKeyChanger{
+    text-align: center;
+    font-family: "Silkscreen", sans-serif;
+    font-weight: 700;
+    font-style: normal;
+    font-size: 64px;
+    color: #ffffff;
+}
+
+.stopMusic{
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    color: wheat;
+    font-size: 60px;
 }
 
