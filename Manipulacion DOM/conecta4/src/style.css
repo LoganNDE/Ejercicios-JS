@@ -41,10 +41,16 @@
 
 .game{
     display: grid;
-    width: 40%;
-    height: 70%;
     background-color: #3b3bff;
     border-radius: 6px;
+    gap: 20px;
+    padding: 15px;
+}
+
+.ficha{
+    height: 100px;
+    width: 100px;
+    border-radius: 50px;
 }
 
 

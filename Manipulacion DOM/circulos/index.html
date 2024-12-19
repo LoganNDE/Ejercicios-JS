@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pintar Circulo</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="wrapper"></div>
+    <script>
+
+        let wrapper = document.querySelector(".wrapper");
+
+        class Circle{
+            
+            constructor(size, colorA, colorB, colorC, positionX, positionY){
+                this.size = size;
+                this.colorA = colorA;
+                this.colorB = colorB;
+                this.colorC = colorC;
+                this.positionX = positionX;
+                this.positionY = positionY;
+            }
+
+
+            dibujarCirculo() {
+                let circleDOM = document.createElement("div");
+                circleDOM.style.backgroundColor = "rgb(" + this.colorA + ", " + this.colorB + ", " + this.colorC + ")";
+                circleDOM.style.width = this.size + "px";
+                circleDOM.style.height = this.size + "px";
+                circleDOM.style.borderRadius = this.size/2 + "px";
+                circleDOM.style.position = "absolute";
+                circleDOM.style.left = this.positionX + "px";
+                circleDOM.style.top = this.positionY + "px";
+                wrapper.appendChild(circleDOM);
+                setTimeout(()=>circleDOM.remove(),1000);
+                console.log(Circulo);
+            }
+
+        }
+
+
+        const randomParam = (numeroFin) =>{
+            return Math.floor(Math.random() * (numeroFin + 1));
+        }
+
+
+        dibujarCirculoAleatorio = () => {
+            maxSizeCircle = 220;
+            maxColorRange = 225;
+            tamano = randomParam(maxSizeCircle);
+
+            maxHeight = wrapper.offsetHeight - tamano;
+            maxWidth = wrapper.offsetWidth - tamano;
+            Circulo = new Circle(tamano, randomParam(maxColorRange), randomParam(maxColorRange), randomParam(maxColorRange), randomParam(maxWidth), randomParam(maxHeight));
+            Circulo.dibujarCirculo();
+        }
+
+        setInterval(dibujarCirculoAleatorio, 0);
+    </script>
+</body>
+</html>
