@@ -118,12 +118,8 @@ window.onload = () =>{
     }
     
     
-    const comprobarVertical = (contadorFila, casillaMarcada) =>{
+    const comprobarHorizontal = (contadorFila, casillaMarcada) =>{
         let contadorFichas = 0;
-        console.log("cords: " + contadorFila + ":" + casillaMarcada)
-
-        console.log(tablero[contadorFila][casillaMarcada])
-
 
         //CAMBIAMOS DE JUGADOR DE FALSE->TRUE, YA QUE AL TIRAR LA FICHA, ESTA CAMBIA DE JUGADOR ANTES DE HACER LA COMPORBACIÓN
         if (!jugador){
@@ -150,15 +146,50 @@ window.onload = () =>{
                     break;
                 }
             }
+            contadorFichas = 0
+
+            for (let i = casillaMarcada; tablero[contadorFila][i] == false; i--){
+                contadorFichas++;
+                if (contadorFichas == 4){
+                    alert("ganadorJ2")
+                    break;
+                }
+            }
         }
 
+    }
+
+
+    const comprobarVertical = (contadorFila, casillaMarcada) =>{
+        let contadorFichas = 0;
+        console.log(casillaMarcada + ":" + contadorFila)
+        //CAMBIAMOS DE JUGADOR DE FALSE->TRUE, YA QUE AL TIRAR LA FICHA, ESTA CAMBIA DE JUGADOR ANTES DE HACER LA COMPORBACIÓN
+        if (!jugador){
+
+            for (let i = contadorFila; tablero[i][casillaMarcada] == true; i--){
+                contadorFichas++;
+                if (contadorFichas == 4){
+                    alert("ganadorJ1")
+                    break;
+                }
+            }
+        }else{
+            for (let i = contadorFila; tablero[i][casillaMarcada] == false; i--){
+                contadorFichas++;
+                console.log("Fichas Izquieda: " + contadorFichas)
+                if (contadorFichas == 4){
+                    alert("ganadorJ2")
+                    break;
+                }
+            }
+        }
     }
 
 
 
 
     const comprobarGanador = (contadorCasilla, filaMarcada) =>{
-        console.log(numeroTiradas);
+        console.log("Numero de tiradas " + numeroTiradas);
         if (numeroTiradas == tamañoTablero){
             tableroDOM.removeEventListener("click", handleTirarFicha);
             detenerBorradorMensaje();
@@ -167,7 +198,12 @@ window.onload = () =>{
             mensaje.innerText = "¡EMPATE! Reinicie el juego para jugar de nuevo";
         }
         
+        comprobarHorizontal(contadorCasilla, filaMarcada)
+        console.log("Fila marcada: " + contadorCasilla)
+        if (contadorCasilla > 2){
         comprobarVertical(contadorCasilla, filaMarcada);
+        }
+        
         /*while (!ganador){
             
         
