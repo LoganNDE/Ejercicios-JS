@@ -1,23 +1,19 @@
-//Configuracion por defecto
-let filas = 6;
-let columnas = 7;
-let tamañoTablero = filas * columnas;
-
-//Indica quien es el jugador actual [TRUE -> J1 & FALSE -> J2]
-let jugador = true;
-
 window.onload = () =>{
+    //Configuracion por defecto
+    let filas = 6;
+    let columnas = 7;
+    let tamañoTablero = filas * columnas;
+    let numFichasGanadoras = 4
+    let nombreJ1 = "J1";
+    let nombreJ2 = "J2";
+    let jugador = true; //Indica quien es el jugador actual [TRUE -> J1 & FALSE -> J2]
+
     let tableroDOM = document.querySelector(".game");
     let mensaje = document.getElementById("mensaje");
     let reiniciarBtn = document.querySelector(".reiniciar");
     let tablero;
     let numeroTiradas = 0;
     let ganador = false;
-
-    //let matriz = Array.from({ length: filas }, () => new Array(columnas).fill(0));
-    //let matriz = new Array(filas).fill(null).map(() => new Array(columnas).fill(0));
-    //console.log(matriz)
-
 
     generarMatriz = () => {
         mainMatrix = [];
@@ -51,15 +47,15 @@ window.onload = () =>{
     const tirarFicha = (event) =>{
         celdaPulsadaDOM = Number.parseInt(event.target.id);
         if (Number.isInteger(celdaPulsadaDOM)){
-            filaMarcada = (celdaPulsadaDOM%columnas);
+            fila = (celdaPulsadaDOM%columnas);
             console.log(tablero);
             casillaVacia = false;
-            contadorCasilla = 0;
-            casillaDOM = filaMarcada;
+            columna = 0;
+            casillaDOM = fila;
             
     
             while (!casillaVacia){
-                if (tablero[contadorCasilla][filaMarcada] == -1){
+                if (tablero[columna][fila] == -1){
                     casillaVacia = true;
                     numeroTiradas++;
                     celdaMarcarDOM = document.getElementById(casillaDOM)
@@ -67,22 +63,23 @@ window.onload = () =>{
                     if (jugador){
                         celdaMarcarDOM.style.backgroundColor = "red";
                         celdaMarcarDOM.style.border = "1.5px solid black";
-                        tablero[contadorCasilla][filaMarcada] = jugador;
+                        tablero[columna][fila] = jugador;
+                        comprobarGanador(columna, fila, jugador);
                         jugador = false;
                     }else{
                         celdaMarcarDOM.style.backgroundColor = "yellow";
                         celdaMarcarDOM.style.border = "1.5px solid black"
-                        tablero[contadorCasilla][filaMarcada] = jugador;
+                        tablero[columna][fila] = jugador;
+                        comprobarGanador(columna, fila, jugador);
                         jugador = true;
-                    
                     }
-                    
-                    comprobarGanador(contadorCasilla, filaMarcada);
-                
                 }else{
-                    contadorCasilla = contadorCasilla + 1;
-                    casillaDOM = casillaDOM + 7;
-                    if (tablero[contadorCasilla] == undefined){
+
+                    //Desplazamiento para colocar la siguiente ficha -> fila superior, a la casilla le sumamos el 
+                    columna = columna + 1;
+                    casillaDOM = casillaDOM + columnas;
+                    
+                    if (tablero[columna] == undefined){
                         mensaje.className = "";
                         mensaje.classList.add("alerta");
                         mensaje.innerText = "Fila llena";
@@ -111,6 +108,7 @@ window.onload = () =>{
         iniciarBorradoMensaje();
         numeroTiradas = 0;
         jugador = true;
+        ganador = false;
 
         mensaje.className = "";
         mensaje.classList.add("exitoso")
@@ -118,99 +116,132 @@ window.onload = () =>{
     }
     
     
-    const comprobarHorizontal = (contadorFila, casillaMarcada) =>{
+    const comprobarHorizontal = (columna, fila, jugador) =>{
         let contadorFichas = 0;
-
-        //CAMBIAMOS DE JUGADOR DE FALSE->TRUE, YA QUE AL TIRAR LA FICHA, ESTA CAMBIA DE JUGADOR ANTES DE HACER LA COMPORBACIÓN
-        if (!jugador){
-            for (let i = casillaMarcada; tablero[contadorFila][i] == true; i++){
+            for (let i = fila; tablero[columna][i] == jugador; i++){
                 contadorFichas++;
-                if (contadorFichas == 4){
-                    alert("ganadorJ1")
+                if (contadorFichas == numFichasGanadoras){
+                    anunciarGanador(jugador);
                     break;
                 }
             }
             contadorFichas = 0
-            for (let i = casillaMarcada; tablero[contadorFila][i] == true; i--){
+            for (let i = fila; tablero[columna][i] == jugador; i--){
                 contadorFichas++;
-                if (contadorFichas == 4){
-                    alert("ganadorJ1")
-                    break;
-                }
-            }
-        }else{
-            for (let i = casillaMarcada; tablero[contadorFila][i] == false; i++){
-                contadorFichas++;
-                if (contadorFichas == 4){
-                    alert("ganadorJ2")
-                    break;
-                }
-            }
-            contadorFichas = 0
-
-            for (let i = casillaMarcada; tablero[contadorFila][i] == false; i--){
-                contadorFichas++;
-                if (contadorFichas == 4){
-                    alert("ganadorJ2")
+                if (contadorFichas == numFichasGanadoras){
+                    anunciarGanador(jugador);
                     break;
                 }
             }
         }
 
-    }
 
-
-    const comprobarVertical = (contadorFila, casillaMarcada) =>{
-        let contadorFichas = 0;
-        console.log(casillaMarcada + ":" + contadorFila)
-        //CAMBIAMOS DE JUGADOR DE FALSE->TRUE, YA QUE AL TIRAR LA FICHA, ESTA CAMBIA DE JUGADOR ANTES DE HACER LA COMPORBACIÓN
-        if (!jugador){
-
-            for (let i = contadorFila; tablero[i][casillaMarcada] == true; i--){
+    const comprobarVertical = (columna, fila, jugador) =>{
+        // Solo comprobara el ganador en caso que la columna de la posicion marcada sea superior a 2, teniendo en cuenta que las columnas empiezan desde 0;
+        if (columna > 2){
+            let contadorFichas = 0;
+            for (let i = columna; tablero[i][fila] == jugador; i--){
+                console.log(i)
                 contadorFichas++;
-                if (contadorFichas == 4){
-                    alert("ganadorJ1")
-                    break;
-                }
-            }
-        }else{
-            for (let i = contadorFila; tablero[i][casillaMarcada] == false; i--){
-                contadorFichas++;
-                console.log("Fichas Izquieda: " + contadorFichas)
-                if (contadorFichas == 4){
-                    alert("ganadorJ2")
+                if (contadorFichas == numFichasGanadoras){
+                    anunciarGanador(jugador);
                     break;
                 }
             }
         }
     }
 
+    const comprobarDiagonales = (columna, fila, jugador) =>{
+        if (columna > 2){
+            let contadorFichas = 0;
+    
+            let i = columna;
+            let j = fila;
+    
+            // Recorre la diagonal hacia arriba-izquierda
+            while (i >= 0 && j >= 0 && tablero[i][j] == jugador) {
+                contadorFichas++;
+                console.log("Contador de fichas diagonales aRRIBA-IZQUIERDA: " + contadorFichas);
+    
+                if (contadorFichas == numFichasGanadoras) {
+                    anunciarGanador(jugador);
+                    return;
+                }
+    
+                i--;
+                j--;
+            }
 
 
+                i = columna;
+                j = fila;
+                contadorFichas = 0;
 
-    const comprobarGanador = (contadorCasilla, filaMarcada) =>{
-        console.log("Numero de tiradas " + numeroTiradas);
-        if (numeroTiradas == tamañoTablero){
-            tableroDOM.removeEventListener("click", handleTirarFicha);
-            detenerBorradorMensaje();
-            mensaje.className = "";
-            mensaje.classList.add("error");
-            mensaje.innerText = "¡EMPATE! Reinicie el juego para jugar de nuevo";
-        }
+                while (i >= 0 && j < columnas && tablero[i][j] == jugador) {
+                    contadorFichas++;
+                    console.log("Contador de fichas diagonales: " + contadorFichas);
         
-        comprobarHorizontal(contadorCasilla, filaMarcada)
-        console.log("Fila marcada: " + contadorCasilla)
-        if (contadorCasilla > 2){
-        comprobarVertical(contadorCasilla, filaMarcada);
-        }
+                    if (contadorFichas == numFichasGanadoras) {
+                        anunciarGanador(jugador);
+                        return;
+                    }
         
-        /*while (!ganador){
+                    i--;
+                    j++;
+                }
+        }
             
-        
-        } 
-        
-        */
-        
+            
+            /*console.log("he entrado en la comprobacion de las diagonalies") 
+            let contadorFichas = 0
+            for (let i = columna; tablero[i][fila] == jugador; i--){
+                    console.log(tablero[i][fila-1]);
+                    if (tablero[i][fila-1] == jugador){
+                        fila--;
+                        contadorFichas++;
+                        console.log("Contador de fichas diagonales:" + contadorFichas)
+                        if (contadorFichas == 4){
+                            anunciarGanador(jugador);
+                            break;
+                        }
+                    }
+                }
+            }*/
+        }
+
+
+
+
+    const comprobarGanador = (columna, fila, jugador) =>{
+        if (!ganador){
+            console.log("Numero de tiradas " + numeroTiradas);
+
+            comprobarHorizontal(columna, fila, jugador);
+            comprobarVertical(columna, fila, jugador);
+            comprobarDiagonales(columna, fila, jugador);
+
+
+            //Empate
+            if (numeroTiradas == tamañoTablero & !ganador){
+                tableroDOM.removeEventListener("click", handleTirarFicha);
+                detenerBorradorMensaje();
+                mensaje.className = "";
+                mensaje.classList.add("error");
+                mensaje.innerText = "¡EMPATE! Reinicie el juego para jugar de nuevo";
+            }
+        }
+    }
+
+
+    const anunciarGanador = (jugador) =>{
+        nombreJugador = nombreJ1;
+        if (!jugador) nombreJugador = nombreJ2
+        ganador = true;
+        mensaje.className = "";
+        mensaje.classList.add("exitoso")
+        mensaje.innerText = `Enhorabuena ${nombreJugador} has ganado la partida`;
+        tableroDOM.removeEventListener("click", handleTirarFicha);
+        detenerBorradorMensaje();
     }
 
 
