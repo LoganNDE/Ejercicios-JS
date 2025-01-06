@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Recursive Menu</title>
+  <style>
+    ul {
+      list-style: none;
+      padding-left: 20px;
+    }
+    li {
+      margin: 5px 0;
+    }
+    a {
+      text-decoration: none;
+      color: #007BFF;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <nav id="menu-container"></nav>
+
+  <script>
+    // Estructura del menú en forma de objeto
+    const menuData = [
+      {
+        label: "Home",
+        link: "/home",
+      },
+      {
+        label: "About",
+        link: "/about",
+        subItems: [
+          {
+            label: "Our Team",
+            link: "/about/team",
+          },
+          {
+            label: "Our Values",
+            link: "/about/values",
+            subItems: [
+              { label: "Integrity", link: "/about/values/integrity" },
+              { label: "Innovation", link: "/about/values/innovation" },
+            ],
+          },
+        ],
+      },
+      {
+        label: "Services",
+        link: "/services",
+        subItems: [
+          { label: "Web Development", link: "/services/web-dev" },
+          { label: "SEO", link: "/services/seo" },
+        ],
+      },
+      {
+        label: "Contact",
+        link: "/contact",
+      },
+    ];
+
+    // Función recursiva para generar el HTML del menú
+    function generateMenu(menuItems) {
+      const ul = document.createElement("ul"); // Crear un contenedor <ul>
+
+      menuItems.forEach((item) => {
+        const li = document.createElement("li"); // Crear un <li> para cada elemento del menú
+        const a = document.createElement("a"); // Crear un enlace
+        a.href = item.link; // Asignar el enlace
+        a.textContent = item.label; // Asignar el texto
+
+        li.appendChild(a); // Añadir el enlace al <li>
+
+        // Si el elemento tiene subItems, llamamos recursivamente
+        if (item.subItems && item.subItems.length > 0) {
+          const subMenu = generateMenu(item.subItems); // Recursión
+          li.appendChild(subMenu); // Añadir el submenú al <li>
+        }
+
+        ul.appendChild(li); // Añadir el <li> al <ul>
+      });
+
+      return ul; // Devolver el <ul> construido
+    }
+
+    // Renderizar el menú en el contenedor
+    const menuContainer = document.getElementById("menu-container");
+    const menuHTML = generateMenu(menuData); // Llamar a la función recursiva
+    menuContainer.appendChild(menuHTML); // Añadir el menú generado al DOM
+  </script>
+</body>
+</html>
