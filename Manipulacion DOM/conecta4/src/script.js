@@ -173,22 +173,22 @@ window.onload = () =>{
             }
 
 
-                i = columna;
-                j = fila;
-                contadorFichas = 0;
+            i = columna;
+            j = fila;
+            contadorFichas = 0;
 
-                while (i >= 0 && j < columnas && tablero[i][j] == jugador) {
-                    contadorFichas++;
-                    console.log("Contador de fichas diagonales: " + contadorFichas);
-        
-                    if (contadorFichas == numFichasGanadoras) {
-                        anunciarGanador(jugador);
-                        return;
-                    }
-        
-                    i--;
-                    j++;
+            while (i >= 0 && j < columnas && tablero[i][j] == jugador) {
+                contadorFichas++;
+                console.log("Contador de fichas diagonales: " + contadorFichas);
+    
+                if (contadorFichas == numFichasGanadoras) {
+                    anunciarGanador(jugador);
+                    return;
                 }
+    
+                i--;
+                j++;
+            }
         }
             
             

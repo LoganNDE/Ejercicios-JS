@@ -1,0 +1,65 @@
+@import url('https://fonts.googleapis.com/css2?family=Onest:wght@100..900&display=swap');
+@import url('https://fonts.cdnfonts.com/css/pokemon-hollow');
+*{
+    margin: 0;
+    padding: 0;
+}
+
+
+.container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    height: 100vh;
+}
+
+.title{
+    margin-bottom: 10px;
+    font-family: 'Pokemon Hollow', sans-serif;}
+
+
+.grid{
+    width: 80%;
+    height: 60%;
+    display: grid;
+    justify-content: center;
+    grid-template-columns: 200px 200px 200px 200px;
+    gap: 40px;
+}
+
+.card{
+    height: 280px;
+    background-image: linear-gradient(rgba(255, 255, 255, 0.342), rgba(255, 255, 255, 0.688)), url('img/fondoCard.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    color: white; /* Asegura que el texto sea visible */
+    border: 4px solid rgba(255, 166, 0, 0.956);
+    border-radius: 10px;
+    
+}
+
+
+.containerImg{
+    margin-top: 20px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+
+.cardImg{
+    width: 50%;
+}
+
+.cardTitle{
+    padding: 10px;
+    font-family: "Onest", serif;
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: capitalize;
+    color: black;
+    font-style: normal;
+}
+
+
