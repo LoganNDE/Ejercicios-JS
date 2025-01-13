@@ -11,9 +11,14 @@ window.onload = () =>{
     getData = (offset = 0) =>{
         pokemonList = [];
         xhr = new XMLHttpRequest();
+        // Listado de pokemons
         xhr.open('GET', `https://pokeapi.co/api/v2/pokemon?limit=${limit}&offset=${offset}`, true);
     
         xhr.onreadystatechange = () =>{
+            
+            pokeonTypesList = []; 
+
+
             if (xhr.readyState === 4 && xhr.status === 200){
                 let response = xhr.responseText
                 let responseJSON = JSON.parse(response);
@@ -22,6 +27,7 @@ window.onload = () =>{
     
                 responseJSON.results.forEach(pokemon => {
                     let xhrPokemon = new XMLHttpRequest();
+                    //Consulta a X pokemon  [individual]
                     xhrPokemon.open('GET', `https://pokeapi.co/api/v2/pokemon/${pokemon['name']}`, true);
     
                     xhrPokemon.onreadystatechange = () =>{
@@ -31,8 +37,44 @@ window.onload = () =>{
                             pokemonList.push(responsePokemonJSON);
                             
                             if (pokemonList.length === limit){
+                                //ORDEN TEMPORAL
                                 pokemonList = pokemonList.sort((a, b) => a.id - b.id);
-                                showPokemons(pokemonList);
+
+                                let xhrPokemonType = new XMLHttpRequest();
+                                // Listado de tipos
+                                xhrPokemonType.open('GET', 'https://pokeapi.co/api/v2/type', true);
+                            
+                                xhrPokemonType.onreadystatechange = () =>{
+                                    if (xhrPokemonType.readyState === 4 && xhrPokemonType.status === 200){
+                                        let response = xhrPokemonType.responseText
+                                        let responseTypeJSON = JSON.parse(response);
+                                        
+                                        responseTypeJSON['results'].forEach(type => {
+                                            let xhrPokemonIndividualType = new XMLHttpRequest();
+                                            // Consulta a X tipo [infividual]
+                                            console.log(type['url'])
+                                            xhrPokemonIndividualType.open('GET', type['url'], true);
+                                            
+                                            xhrPokemonIndividualType.onreadystatechange = () =>{
+                                                if (xhrPokemonIndividualType.readyState === 4 && xhrPokemonIndividualType.status === 200){
+                                                    let response = xhrPokemonIndividualType.responseText
+                                                    let responseIndividualTypeJSON = JSON.parse(response);
+                                                    pokeonTypesList.push(responseIndividualTypeJSON);
+
+                                                    if (pokeonTypesList.length === responseTypeJSON.count - 1){
+                                                        showPokemons(pokemonList, pokeonTypesList);
+                                                    }
+                                                    
+                                                }
+                                            }
+
+                                            xhrPokemonIndividualType.send();
+
+                                        });
+                                        
+                                    }
+                                }
+                                xhrPokemonType.send();
                             }
                                                        
                         }
@@ -47,7 +89,7 @@ window.onload = () =>{
 
     getData();
 
-    showPokemons = (pokemons = pokemonList) =>{
+    showPokemons = (pokemons = pokemonList, pokeonTypesList = null) =>{
 
         mainContainer = document.querySelector(".container");
         let gridParent = document.createElement("div");
@@ -81,8 +123,25 @@ window.onload = () =>{
         
         nameContainer.appendChild(pokemonName);
         nameContainer.appendChild(idPokemon);
-        
         card.appendChild(nameContainer);        
+
+
+
+        pokeonTypesList.forEach(type => {
+            pokemon['types'].forEach(typePokemonInfo => {
+
+                if (type.name == typePokemonInfo.type.name){
+                    console.log("dasdsa")
+                    let typeImg = document.createElement('img');
+                    typeImg.classList.add('imgType')
+                    typeImg.setAttribute('src', type.sprites['generation-viii']['brilliant-diamond-and-shining-pearl'].name_icon)
+                    card.appendChild(typeImg);
+                }
+            });
+            
+        });
+
+        
         gridParent.appendChild(card)
         });
     
